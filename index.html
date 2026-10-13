@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 06:35</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 06:37</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -197,6 +197,13 @@ mpz_class x = index.countMP();</pre>
       <ul class="pt">
         <li>Macで std::numeric_limits を表示して確かめた値。貸与PCのUbuntuでもintは32ビット、long longは64ビット</li>
         <li>intの最小値は−2147483648。符号付き32ビットなので、およそ±2の31乗</li>
+      </ul>
+      <div class="chips"><span class="chip new">10/14に質問して足した所</span></div>
+      <ul class="pt">
+        <li>2147483647は2³²ではなく2³¹−1。32ビットで作れる並びは2³²＝4294967296通りあるが、intはマイナスも表すので、半分の2³¹通りをマイナスに、残り半分を0とプラスに使う</li>
+        <li>0とプラスの側は0の分が1つ減るので、プラスの最大は2³¹−1＝2147483647。マイナスは−2³¹＝−2147483648まで</li>
+        <li>3ビットで考えると、並びは2³＝8通りで、−4から3まで。マイナスが4個、0とプラスが4個</li>
+        <li>long longも同じで、最大は2⁶³−1＝9223372036854775807。マイナスを使わない unsigned long long は0から2⁶⁴−1まで</li>
         <li>9×9の3266598486981642はlong longなら入る</li>
         <li>F1-3の方法1と方法2は数をlong longで数えているが、測ったのは7×7の575780564までなので足りている</li>
       </ul>
