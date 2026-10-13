@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>実験F 試問カード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* レイアウト：スマホ1列。上に固定のタブ、下に質問カードを縦に積む。タップで答えが開く */
+:root {
+  --bg: #eef2ef;
+  --surface: #ffffff;
+  --fg: #1b2420;
+  --muted: #5a6761;
+  --line: #d6ddd8;
+  --accent: #1f5e8c;
+  --accent-soft: #e3edf5;
+  --mark-bg: #f6e08a;
+  --mark-fg: #3d3204;
+  --ok: #2f7a4f;
+  --code-bg: #f1f4f2;
+  --f-body: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --f-head: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121816; --surface: #1b2320; --fg: #e4ebe7; --muted: #9aa8a1; --line: #2c3833;
+    --accent: #86bbe3; --accent-soft: #1d2d3a; --mark-bg: #5e4f12; --mark-fg: #f7e7a6; --ok: #6cc596; --code-bg: #232d29;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121816; --surface: #1b2320; --fg: #e4ebe7; --muted: #9aa8a1; --line: #2c3833;
+  --accent: #86bbe3; --accent-soft: #1d2d3a; --mark-bg: #5e4f12; --mark-fg: #f7e7a6; --ok: #6cc596; --code-bg: #232d29;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.75; }
+.wrap { max-width: 680px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 64px; display: grid; gap: 18px; }
+header h1 { font-family: var(--f-head); font-size: 1.6rem; line-height: 1.3; margin: 0; text-wrap: balance; }
+header .when { margin: 6px 0 0; color: var(--muted); font-size: .95rem; }
+header .when b { color: var(--fg); }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px; display: grid; gap: 8px; border-bottom: 1px solid var(--line); }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.tabs a { text-align: center; text-decoration: none; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 4px; font-weight: 700; }
+.tabs a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .85rem; }
+.tools button { font: inherit; color: var(--accent); background: var(--accent-soft); border: 0; border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.tools button[aria-pressed="true"] { background: var(--accent); color: var(--surface); }
+.tools .count { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+section { display: grid; gap: 10px; scroll-margin-top: 120px; }
+section > h2 { font-family: var(--f-head); font-size: 1.25rem; margin: 14px 0 2px; }
+section > h3 { font-size: .9rem; color: var(--muted); letter-spacing: .04em; margin: 10px 0 0; }
+.note { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.note p { margin: 0; }
+.note ul { margin: 0; padding-left: 1.2em; }
+details.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.card[data-done="1"] { border-color: var(--ok); }
+details.card summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; gap: 4px; }
+details.card summary::-webkit-details-marker { display: none; }
+.q { font-weight: 700; }
+.q::before { content: "Q"; color: var(--accent); font-family: var(--f-mono); margin-right: .5em; }
+details.card[data-done="1"] .q::before { content: "✓"; color: var(--ok); }
+.chip { justify-self: start; font-size: .75rem; background: var(--mark-bg); color: var(--mark-fg); border-radius: 4px; padding: 0 6px; letter-spacing: .02em; }
+.a { padding: 0 14px 14px; display: grid; gap: 10px; min-width: 0; }
+.say { margin: 0; border-left: 3px solid var(--accent); padding-left: 12px; }
+.pt { margin: 0; padding-left: 1.2em; color: var(--muted); font-size: .93rem; }
+.pt li + li { margin-top: 2px; }
+code, pre { font-family: var(--f-mono); font-size: .85em; }
+code { background: var(--code-bg); border-radius: 4px; padding: 0 4px; }
+pre { background: var(--code-bg); border-radius: 8px; padding: 10px 12px; margin: 0; overflow-x: auto; line-height: 1.5; }
+.done { justify-self: start; display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--ok); cursor: pointer; }
+.done input { width: 20px; height: 20px; accent-color: var(--ok); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
+th, td { border-bottom: 1px solid var(--line); padding: 3px 8px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+.hide-done details.card[data-done="1"] { display: none; }
+@media (prefers-reduced-motion: no-preference) { details.card[open] .a { animation: fade .15s ease-out; } }
+@keyframes fade { from { opacity: .4; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<div class="wrap" id="top">
+  <header>
+    <h1>実験F 試問カード</h1>
+    <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
+  </header>
+
+  <div class="bar">
+    <nav class="tabs" aria-label="セクション">
+      <a href="#day">当日</a><a href="#f1">F1</a><a href="#f2">F2</a>
+    </nav>
+    <div class="tools">
+      <button type="button" id="openAll">全部開く</button>
+      <button type="button" id="closeAll">全部閉じる</button>
+      <button type="button" id="hideDone" aria-pressed="false">言えたのを隠す</button>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+
+  <section id="day">
+    <h2>当日の流れ</h2>
+    <div class="note">
+      <ul>
+        <li>提出したレポートを先生と一緒に見ながら、内容を説明して質問に答える形</li>
+        <li>手引き書には、レポートに書いた文・用語・図表はすべて聞くと書いてある。答えられないと再試問</li>
+        <li>友達はレポートを見ながら、各課題で何をしたか、プログラムの動き、結果の理由を聞かれた</li>
+        <li>カードをタップすると答え方の例が開く。言えたら言えたにチェックすると枠が緑になる</li>
+      </ul>
+    </div>
+    <div class="note">
+      <p>黄色の印が付いたカードは、友達が実際に聞かれた質問。答え方の例は先生に話す想定なので、です・ます調にしてある。</p>
+    </div>
+  </section>
+
+  <section id="f1">
+    <h2>F1　ZDDを用いた格子パスの数え上げ</h2>
+
+    <h3>全体</h3>
+    <details class="card" id="f1-gaiyou"><summary><span class="q">この実験で何をやったか、ざっくり説明して</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">n×nの格子の左上から右下へのパスの総数を、ZDDを使う方法と、パスを1本ずつ数える素朴な方法で求めて、パスの数と実行時間を比べました。また、2×2の格子のパスを表すZDDを手で書いて、二分決定木よりどれくらい小さくなるかを確かめました。ZDDは12×12の約1.8×10²⁹本を31.119秒で数えられましたが、素朴な方法は7×7で約6分かかりました。</p>
+      <ul class="pt"><li>目的は、組合せ爆発を起こす数え上げでも、アルゴリズムの選び方で非常に速く解けることを体感すること</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-kadai"><summary><span class="q">課題F1-1、F1-2、F1-3はそれぞれ何をした？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">F1-1では、ライブラリのZDDを使って、2×2から12×12までの格子のパスの総数と実行時間を求めました。F1-2では、2×2の格子のパスを表す二分決定木とZDDを手で書いて、分岐節点の数を比べました。F1-3では、素朴なアルゴリズムを2つ自分で考えて、同じようにパスの数と時間を測りました。</p>
+    </div></details>
+
+    <details class="card" id="f1-path"><summary><span class="q">ここでいうパスって何？最短経路とは違う？</span></summary><div class="a">
+      <p class="say">同じ頂点を2回通らない道のことです。遠回りする道も含むので、高校で習った最短経路の組合せの公式では求められません。例えば3×3では、最短経路は6本ですが、パスは12本あります。</p>
+    </div></details>
+
+    <h3>F1-1　ZDDで数える</h3>
+    <details class="card" id="f1-1-tejun"><summary><span class="q">F1-1のプログラムの流れを説明して</span></summary><div class="a">
+      <p class="say">まずGBaseのインスタンスを作って、SetGridで格子グラフを作ります。次にSimPathsに始点の頂点1と終点の頂点n²を渡して、すべてのパスを表すZDDを作ります。そのZDDをDDIndexに渡して、countMPでパスの総数を数えて出力しました。</p>
+<pre>GBase gb;
+gb.SetGrid(9,9);                  // 10×10
+ZBDD z = gb.SimPaths(1, 100);     // 1 から 100 へのパス
+DDIndex&lt;int&gt; index(z);
+mpz_class x = index.countMP();</pre>
+    </div></details>
+
+    <details class="card" id="f1-1-setgrid"><summary><span class="q">10×10なのに、なんでSetGrid(9,9)なの？</span></summary><div class="a">
+      <p class="say">SetGridの引数は、x軸とy軸それぞれの辺の本数だからです。SetGrid(x, y)で(x+1)×(y+1)の格子ができるので、n×nの格子にはn−1を渡します。</p>
+      <ul class="pt"><li>nを変えるたびに、SetGridの引数と終点のn²を書き換えてコンパイルし直した</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-1-mpz"><summary><span class="q">mpz_classって何？なんでintじゃダメ？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">多倍長整数の型です。普通の整数型は表せる大きさに上限がありますが、多倍長整数は桁が足りなくなると自動で広げるので、とても大きな数も正確に扱えます。パスの総数は格子が大きくなるとすぐに普通の整数型の範囲を超えるので、countMPは多倍長整数で返します。</p>
+      <ul class="pt">
+        <li>具体例：10×10は約4.1×10¹⁹本。long longの上限は約9.2×10¹⁸なので、10×10の時点で超える</li>
+        <li>12×12は約1.8×10²⁹本</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-1-ddindex"><summary><span class="q">DDIndex&lt;int&gt;のintは何？</span></summary><div class="a">
+      <p class="say">ZDDの節点ごとに持たせる追加の情報の型を指定する所です。今回は追加の情報を使わないので、手引き書の指示どおりintにしました。</p>
+    </div></details>
+
+    <details class="card" id="f1-1-kekka"><summary><span class="q">表1の結果を説明して。パスの数と時間はどう変わった？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">パスの総数は格子が大きくなるほど急激に増え、増える倍率自体もどんどん大きくなりました。2×2から3×3で約6倍、4×4から5×5で約46倍、11×11から12×12では約11.6万倍です。一方、ZDDの実行時間は6×6以降でnを1増やすごとに2.4倍から4.7倍で、パスの数の増え方よりはるかに緩やかでした。</p>
+      <div class="tbl"><table>
+        <tr><th>格子</th><th>パスの総数</th><th>時間 [s]</th></tr>
+        <tr><td>3×3</td><td>12</td><td>0.000</td></tr>
+        <tr><td>4×4</td><td>184</td><td>0.005</td></tr>
+        <tr><td>6×6</td><td>1262816</td><td>0.022</td></tr>
+        <tr><td>7×7</td><td>575780564</td><td>0.053</td></tr>
+        <tr><td>10×10</td><td>約4.1×10¹⁹</td><td>1.623</td></tr>
+        <tr><td>12×12</td><td>約1.8×10²⁹</td><td>31.119</td></tr>
+      </table></div>
+      <ul class="pt"><li>n=2〜10は実験日に、11と12は後日、同じ貸与PCで測った</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-1-time"><summary><span class="q">時間はどうやって測った？なんでuserの値？</span></summary><div class="a">
+      <p class="say">timeコマンドで測って、userの値を使いました。userはプログラム自身が計算に使ったCPU時間なので、ほかの処理を待っていた時間が入るrealより、アルゴリズムの計算時間を比べるのに向いているからです。</p>
+    </div></details>
+
+    <details class="card" id="f1-1-5cho"><summary><span class="q">5.8兆年ってどういう計算？</span></summary><div class="a">
+      <p class="say">手引き書にあるように、1本のパスを数えるのに1ナノ秒かかると仮定しました。12×12のパスは約1.8×10²⁹本なので、1.8×10²⁹ナノ秒、つまり約1.8×10²⁰秒で、年に直すと約5.8兆年になります。ZDDはパスを1本ずつ作らないので31秒で済みました。</p>
+    </div></details>
+
+    <details class="card" id="f1-1-naze"><summary><span class="q">ZDDはなんでこんなに速いの？</span></summary><div class="a">
+      <p class="say">ZDDは、パスの集合を、共通する部分をまとめて、パスにならない組合せを除いた小さな図で表します。数えるときもその図をたどるだけで、パスを1本ずつ作らないからだと考えました。</p>
+      <ul class="pt"><li>根節点から1終端節点までの道の数が、表している組合せの数になる。だから図の道を数えればパスの数が出る</li></ul>
+    </div></details>
+
+    <h3>F1-2　二分決定木とZDD</h3>
+    <details class="card" id="f1-2-henkei"><summary><span class="q">二分決定木からZDDへはどうやって変形した？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">2×2の格子の4本の辺をa、b、c、dとして、まず辺をこの順に使うか使わないかで枝分かれさせる二分決定木を書きました。その木に、節点削除規則と節点共有規則を、適用できなくなるまで繰り返しました。</p>
+      <ul class="pt">
+        <li>節点削除規則：1枝、つまり使う側の枝が0終端節点を指す節点を消し、その節点を指していた枝を、消した節点の0枝、つまり使わない側の枝の先につなぎ替える</li>
+        <li>節点共有規則：要素が同じで、0枝の行き先と1枝の行き先も同じ節点を1つにまとめる</li>
+        <li>パスは{a, c}と{b, d}の2本</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-2-henka"><summary><span class="q">実際どれくらい小さくなった？同じ情報でかかるコストの違いは？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">同じ2つの組合せを表すのに、二分決定木は分岐節点が15個必要でしたが、ZDDは4個で、約4分の1になりました。終端節点も16個から、0と1の2個になりました。</p>
+      <ul class="pt">
+        <li>二分決定木の分岐節点は、辺がk本なら2^k−1個。辺4本で15個</li>
+        <li>16通りの辺の選び方のうち、パスになるのは2通りだけ。残り14通りの分が消えた</li>
+        <li>3×3は辺が12本なので、二分決定木だと4095個。パスは12本しかないので、格子が大きいほど差が開くと考えた</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-2-katachi"><summary><span class="q">図3のZDDの4つの節点はどうつながってる？</span></summary><div class="a">
+      <p class="say">根はaです。aを使うと次はcに行き、cを使えば1終端です。aを使わないとbに行き、bを使うとdに行き、dを使えば1終端です。それ以外の枝は0終端に行きます。根から1終端までの道がa、cとb、dの2本なので、パスが2本あることを表しています。</p>
+      <ul class="pt"><li>図の破線は使わない側の枝、実線は使う側の枝</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-2-zero"><summary><span class="q">節点削除規則で消していいのはなんで？</span></summary><div class="a">
+      <p class="say">1枝が0終端節点を指しているということは、その要素を使うと必ず条件を満たさないということです。なので、その節点で枝分かれさせる必要がなく、使わない側の先だけ残せばいいからです。ZDDでは、道の途中に出てこない要素は使わないと読みます。</p>
+    </div></details>
+
+    <h3>F1-3　素朴なアルゴリズム</h3>
+    <details class="card" id="f1-3-hoho1"><summary><span class="q">方法1はどう動く？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">頂点1から出発して、右、下、左、上の優先順位で、格子の外に出ず、まだ通っていない頂点に進みます。ゴールに着いたら1本数えます。ゴールに着いたときや、4方向とも試し終えたときは、1つ前の頂点に戻って次の方向を試します。通ってきた頂点はスタックに積んで管理しました。</p>
+      <ul class="pt">
+        <li>path：通ってきた頂点のスタック。next_dir：その頂点で次に試す方向の番号。0から3が右、下、左、上で、4なら試し終わり</li>
+        <li>used：通った頂点の印。戻るときに外す</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-used"><summary><span class="q">戻るときにused[v]をfalseに戻すのはなんで？</span></summary><div class="a">
+      <p class="say">その頂点は、今たどっている道では使い終わりましたが、別の道では通ってもいいからです。印を残したままだと、ほかのパスがその頂点を通れなくなって、数え漏れが出ます。</p>
+    </div></details>
+
+    <details class="card" id="f1-3-owari"><summary><span class="q">方法1はどうなったら終わる？必ず終わる？</span></summary><div class="a">
+      <p class="say">スタックが空になったら終わります。始点の1まで戻ってきて、1で4方向を全部試し終えると、1も取り出されて空になります。つまり、すべての道を試し終えたときです。同じ頂点は2回通らないし、各頂点で試す方向の番号は増えるだけなので、同じ道を2回たどらず、いつか必ず終わります。</p>
+    </div></details>
+
+    <details class="card" id="f1-3-hoho2"><summary><span class="q">方法2はどう動く？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">必ず通る頂点1とn²の間に、間の頂点2からn²−1のうちいくつかを選んで並べます。隣り合う頂点がすべて1歩で動ける並びなら、パスとして1本数えます。パスはすべての頂点を通るとは限らないので、選ぶ個数は0個からn²−2個まで全部調べました。</p>
+      <ul class="pt">
+        <li>3×3は間の頂点が7個。調べる並べ方は1+7+42+210+840+2520+5040+5040=13700通り</li>
+        <li>終わるのは、最初の呼び出しで、間の頂点を全部試し終えたとき</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-hashi"><summary><span class="q">格子の端はどうやって見分けた？</span></summary><div class="a">
+      <p class="say">頂点の番号で見分けました。右端はnで割った余りが0、左端は余りが1なので、そこからは右や左に動けません。下端は番号にnを足すとn²を超え、上端はnを引くと1より小さくなるので、そこからは下や上に動けません。</p>
+      <ul class="pt"><li>3×3なら3、6、9が右端</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-3-hikisuu"><summary><span class="q">数値は変えられる？増やしたらどうなった？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">格子の大きさnと方法の番号は、実行時に引数で与えるので、コンパイルし直さずに変えられます。方法1は5×5までは0.01秒未満でしたが、6×6で0.772秒、7×7で369.367秒、約6分になりました。方法2は4×4で7571.014秒、約2時間6分かかりました。それ以上は時間がかかりすぎるので測りませんでした。</p>
+<pre>./naive 7 1    // 7×7 を方法1で</pre>
+    </div></details>
+
+    <details class="card" id="f1-3-bairitsu"><summary><span class="q">方法1の時間の増え方はどう考えた？</span></summary><div class="a">
+      <p class="say">6×6から7×7で時間は約478倍になり、パスの総数の倍率の約456倍に近かったです。方法1はパスを1本ずつたどるので、時間はパスの総数にほぼ比例すると考えました。少し大きいのは、格子が大きいと1本のパスが長くなることや、行き止まりになる途中までの道もたどるからだと考えました。</p>
+    </div></details>
+
+    <details class="card" id="f1-3-hoho2osoi"><summary><span class="q">方法2はなんで方法1よりずっと遅い？</span></summary><div class="a">
+      <p class="say">方法1は動ける頂点にしか進まないので、パスにならない並べ方をはじめから作りません。方法2は動けるかどうかに関係なく並べ方を作ってから調べるので、ほとんどが無駄な確認になります。4×4では236975164805通りを調べて、パスだったのは184通りだけでした。</p>
+      <ul class="pt"><li>4×4の並べ方の数は3×3の約1700万倍。同じ4×4を方法1は0.01秒未満で数えた</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-3-gyakuten"><summary><span class="q">2×2の方が3×3より時間が長いのはなんで？</span></summary><div class="a">
+      <p class="say">0.01秒未満のごく短い時間なので、timeコマンドの表示の細かさや、測ったときの計算機の状態による誤差が出たと考えました。</p>
+    </div></details>
+
+    <details class="card" id="f1-3-ai"><summary><span class="q">実装に生成AIを使ったとあるけど、どこまで自分でやった？</span></summary><div class="a">
+      <p class="say">2つのアルゴリズムの考え方は自分で考えて、C++で書く所に生成AIを使いました。</p>
+      <ul class="pt"><li>コードの説明を求められる可能性が高い。方法1のwhileループ、方法2のarrangeの再帰を、上のカードの言葉で1行ずつ言えるようにしておく</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-matome"><summary><span class="q">結局、何がわかった？</span></summary><div class="a">
+      <p class="say">7×7では、方法1の369.367秒に対してZDDは0.053秒で、約7000倍の差がありました。パスの総数は格子が大きくなるほど急激に増えるので、1本ずつ数える方法では大きな格子は数えられず、ZDDのように共通する部分をまとめて数える必要があるとわかりました。</p>
+    </div></details>
+  </section>
+
+  <section id="f2">
+    <h2>F2　NN-Crustを用いた曲線の再構成</h2>
+
+    <h3>全体</h3>
+    <details class="card" id="f2-gaiyou"><summary><span class="q">この実験で何をやったか、ざっくり説明して</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">平面上の曲線から取った点だけを使って、元の曲線を近似的に復元する曲線の再構成を、NN-Crustというアルゴリズムで実装しました。F2-1で各点を最も近い点と結ぶ処理を、F2-2で線分が1つしか出ていない点を反対側の最も近い点とも結ぶ処理を作りました。F2-3では自分で描いた点群に使って、どんな点群が苦手かを調べました。</p>
+      <ul class="pt"><li>CGALというC++の平面幾何ライブラリを使った</li></ul>
+    </div></details>
+
+    <details class="card" id="f2-saikousei"><summary><span class="q">曲線の再構成ってどういう問題？</span></summary><div class="a">
+      <p class="say">曲線Σから抽出された点群Pだけが与えられて、Σを近似的に復元する問題です。点には順番が付いていないので、どの点とどの点を結べば元の曲線になるかを、点の位置だけから決めます。</p>
+    </div></details>
+
+    <details class="card" id="f2-zu"><summary><span class="q">出力の図はどう見る？</span></summary><div class="a">
+      <p class="say">黒い点が入力した点で、線分が再構成した曲線です。出力されるPDFの1ページ目が再構成した曲線、2ページ目が入力した点群です。F2-3の図は、左が入力した点群、右が再構成した曲線です。</p>
+    </div></details>
+
+    <h3>F2-1　1つ目のループ</h3>
+    <details class="card" id="f2-1-dousa"><summary><span class="q">1つ目のループで実装した動作を説明して</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">アルゴリズムの2〜4行目にあたります。各点pについて、p以外のすべての点との距離の2乗をCGAL::squared_distanceで求めて、いちばん小さい点qを選びます。線分(p, q)がまだ入っていなければ追加します。</p>
+<pre>if(min_distance &gt; distance or min_q_index == n){
+    min_distance = distance;
+    min_q_index = j;
+}</pre>
+      <ul class="pt"><li>min_q_index == n は、まだ1つも候補を見ていないとき。最初の点を必ず仮の最小にするため</li></ul>
+    </div></details>
+
+    <details class="card" id="f2-1-nijou"><summary><span class="q">なんで距離じゃなくて距離の2乗で比べる？</span></summary><div class="a">
+      <p class="say">どの点が近いかを比べるだけなら、距離の2乗でも大小の順番は同じだからです。2乗のままなら平方根を計算しなくて済みます。</p>
+    </div></details>
+
+    <details class="card" id="f2-1-isnotin"><summary><span class="q">is_not_inは何のため？</span></summary><div class="a">
+      <p class="say">同じ線分を2回入れないためです。pとqがお互いを最も近い点として選び合うと、pの番とqの番で同じ線分ができるので、すでに入っていれば追加しないようにしています。向きが逆の線分も同じものとして判定します。</p>
+    </div></details>
+
+    <details class="card" id="f2-1-togire"><summary><span class="q">1つ目のループだけだと、なんでつながっていない所ができる？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">各点は最も近い点を1つ選ぶだけなので、どの点にも線分は少なくとも1つできますが、2つ目の線分ができるのは、ほかの点から最も近い点として選ばれたときだけです。お互いを選び合う2点は、ほかから選ばれない限り、その線分1つで閉じてしまい、隣の点の組とつながりません。そのため図1のように、2〜5個くらいの点のかたまりが間をあけて並びました。</p>
+    </div></details>
+
+    <h3>F2-2　2つ目のループ</h3>
+    <details class="card" id="f2-2-closest"><summary><span class="q">closestとupdate_closestは何をしてる？</span></summary><div class="a">
+      <p class="say">closestは、点ごとに出ている線分の数を管理する配列です。線分が出ていなければ点の数n、ちょうど1つならその線分のもう一方の端点の番号、2つ以上なら−1にしました。update_closestは、点uと点vを結ぶ線分を追加したときに、uの値をnならvに、それ以外なら−1にします。1回でuの値しか変わらないので、uとvを入れ替えて2回呼びます。</p>
+    </div></details>
+
+    <details class="card" id="f2-2-dousa"><summary><span class="q">2つ目のループで実装した動作を説明して</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">アルゴリズムの5〜10行目にあたります。closestが0以上n未満、つまり線分がちょうど1つの点pだけを対象にして、その線分のもう一方の端をqとします。p、q以外の点rのうち、角rpqが90°より大きい点の中から、pに最も近い点を選んで線分(p, r)を追加します。条件を満たす点が無ければ何もしません。</p>
+    </div></details>
+
+    <details class="card" id="f2-2-donkaku"><summary><span class="q">鈍角を判定している所はどうなってる？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">CGAL::angle(q, p, r)を使いました。真ん中の引数を頂点とする角が90°より大きいときにCGAL::OBTUSEを返すので、pを頂点にした角rpqが鈍角かを判定できます。</p>
+<pre>if(CGAL::angle(q,p,r) == CGAL::OBTUSE){ ... }</pre>
+    </div></details>
+
+    <details class="card" id="f2-2-naze90"><summary><span class="q">なんで90°より大きい点だけを候補にする？</span></summary><div class="a">
+      <p class="say">角rpqが90°より大きい点は、pを通って線分pqに垂直な直線に対して、qと反対側にある点です。pのもう一方の隣はqの反対側にあるはずなので、そこに限ります。単に2番目に近い点を選ぶと、qのさらに先の点など、qと同じ側の点が選ばれて、来た方向に戻る線分ができることがあります。</p>
+    </div></details>
+
+    <details class="card" id="f2-2-nai"><summary><span class="q">条件を満たす点が無いときはどうなる？</span></summary><div class="a">
+      <p class="say">何も追加しません。min_r_indexがnのままなら追加しないようにしました。最初はこの場合を考えていなくて、2つ目のループが正しく動かなかったので、アルゴリズムと1行ずつ照らし合わせて直しました。</p>
+    </div></details>
+
+    <details class="card" id="f2-2-koushin"><summary><span class="q">2つ目のループでもclosestを更新しているのはなんで？</span></summary><div class="a">
+      <p class="say">授業で示されたプログラムと同じく、2つ目のループで線分を追加したときもclosestを更新しています。更新しないと、すでにほかの点から結ばれて線分が2つになった点も、自分の番では1つと判断されてもう1本結ばれ、線分が3つ出る点ができるからです。</p>
+      <ul class="pt">
+        <li>アルゴリズムの6行目は、1つ目のループの線分の集合Nの中で数えるので、厳密にはそこと違う。聞かれたらこれも言う</li>
+        <li>更新する形だと、点を読み込む順番によって結果が変わることがある</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f2-2-zu2"><summary><span class="q">図2はどうなった？望まない接続はなんで起きた？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">図1で途切れていた所がつながって、輪が重なったばねのような1本の曲線になりました。ただ、線どうしが交わる所や、線の端では、本来と違う点どうしが結ばれました。距離と角度だけで隣を決めるので、交わる所ではもう一方の線の近い点を選んでしまい、端の点では反対側の点をもう1つの隣として結んでしまうからです。</p>
+    </div></details>
+
+    <h3>F2-3　自分で描いた点群</h3>
+    <details class="card" id="f2-3-tsukurikata"><summary><span class="q">点群はどうやって作った？</span></summary><div class="a">
+      <p class="say">配布されたgen_points.htmlで、マウスで線を描いて作りました。ボタンを押して動かしている間、取得間隔ごとに位置を整数の座標で記録します。取得間隔は初期値の20 msで点群1から5を作り、点の間隔の違いを調べるために、200 msで似た形の点群6から9を作りました。</p>
+    </div></details>
+
+    <details class="card" id="f2-3-yomitoreru"><summary><span class="q">再構成の結果から何が読み取れる？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">NN-Crustが本来と違う点どうしを結んだのは、線が交差する所、線の端、別の部分の線が近くを通る所、同じ座標の点が重なる所の4つでした。それ以外は、どの点群でも描いた線のとおりに結ばれました。</p>
+    </div></details>
+
+    <details class="card" id="f2-3-kousa"><summary><span class="q">交差する所でうまくいかないのはなんで？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">交点の近くには2本の線の点が集まります。NN-Crustは、各点に前と後ろの隣が1つずつあるとして、距離と角度だけで隣を決めるので、まっすぐ進んだ先の点より、もう一方の線の近い点を隣に選んでしまうことがあります。点群1では交差する所の近くに線分が3つ出る点ができました。</p>
+    </div></details>
+
+    <details class="card" id="f2-3-hashi"><summary><span class="q">線の端でうまくいかないのはなんで？</span></summary><div class="a">
+      <p class="say">線の端の点には本来、隣が1つしかありません。でもNN-Crustは、線分が1つしか出ていない点を途切れたかけらの端と考えて、反対側の点を探して結んでしまいます。点群2のように端の先に点が無くても、離れた所の点が反対側にあれば、長い線分で結ばれます。</p>
+    </div></details>
+
+    <details class="card" id="f2-3-onaji"><summary><span class="q">点群5の同じ座標の点って何が起きた？</span></summary><div class="a">
+      <p class="say">描き終わりでマウスをゆっくり動かしたので、同じ座標の点が4組記録されていました。同じ座標の2点は距離が0なので、お互いを最も近い点として選び合い、長さ0の線分になります。そこでは反対側の向きが決まらないので、短い区間で線が途切れて、始点と別の点が結ばれました。同じ座標の点を除いて実行し直すと、全部描いた線のとおりに結ばれました。</p>
+      <ul class="pt"><li>マウスを止めただけでは点は増えない。ゆっくり動かすと、整数に丸めた座標が同じになる</li></ul>
+    </div></details>
+
+    <details class="card" id="f2-3-200"><summary><span class="q">取得間隔を200 msにしたらどうなった？</span></summary><div class="a">
+      <p class="say">点群1と点群6、点群4と点群8を比べると、点をまばらにした方が本来と違う点どうしを結んだ所が増えて、交差する所や線が近づく所以外でも起きるようになりました。同じ線の上で隣り合う点の間隔が、別の部分までの距離に近づくので、別の部分の点が最も近い点に選ばれやすくなったと考えました。一方、輪の点群7は20個とまばらでも、描いたとおりに結ばれました。</p>
+      <ul class="pt"><li>レポートの図番号：点群1が図3、点群6が図8、点群4が図6、点群8が図10</li></ul>
+    </div></details>
+
+    <details class="card" id="f2-3-jouken"><summary><span class="q">手引き書の適切な条件って、どういう条件だと思う？</span></summary><div class="a">
+      <p class="say">点の間隔が、曲線の別の部分までの距離より十分小さいことが関係していると考えました。そうなっていれば、各点の最も近い点は、同じ線の上の隣の点になりやすいからです。</p>
+    </div></details>
+
+    <details class="card" id="f2-3-umakuikanai"><summary><span class="q">自分の点群でうまくいかなかったのはなんで？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
+      <p class="say">自分の点群には、交差する輪や渦巻き、端のある線が入っていて、NN-Crustの苦手な所を含んでいたからです。交差する所と線が近づく所では別の線の点を、端では反対側の離れた点を結び、点群5では同じ座標の点で途切れました。</p>
+    </div></details>
+
+    <details class="card" id="f2-matome"><summary><span class="q">結局、NN-Crustはどんなときにうまくいく？</span></summary><div class="a">
+      <p class="say">点が曲線の上に細かく並んでいて、曲線が交差せず端も無く、同じ座標の点も無い場合には、距離と角度だけで元の曲線をよく再構成できると考えました。</p>
+    </div></details>
+  </section>
+
+  <p class="note"><a href="#top">上に戻る</a></p>
+</div>
+
+<script>
+(function () {
+  var KEY = "試問カード_言えた";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { saved = {}; }
+  var cards = Array.prototype.slice.call(document.querySelectorAll("details.card"));
+
+  cards.forEach(function (card) {
+    var label = document.createElement("label");
+    label.className = "done";
+    var box = document.createElement("input");
+    box.type = "checkbox";
+    box.id = "c-" + card.id;
+    label.appendChild(box);
+    label.appendChild(document.createTextNode("言えた"));
+    card.querySelector(".a").appendChild(label);
+    if (saved[card.id]) { box.checked = true; card.dataset.done = "1"; }
+    box.addEventListener("change", function () {
+      if (box.checked) { saved[card.id] = 1; card.dataset.done = "1"; }
+      else { delete saved[card.id]; card.dataset.done = ""; }
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      update();
+    });
+  });
+
+  function update() {
+    var n = cards.filter(function (c) { return c.dataset.done === "1"; }).length;
+    document.getElementById("count").textContent = "言えた " + n + " / " + cards.length;
+  }
+  update();
+
+  document.getElementById("openAll").addEventListener("click", function () { cards.forEach(function (c) { c.open = true; }); });
+  document.getElementById("closeAll").addEventListener("click", function () { cards.forEach(function (c) { c.open = false; }); });
+  var hide = document.getElementById("hideDone");
+  hide.addEventListener("click", function () {
+    var on = hide.getAttribute("aria-pressed") !== "true";
+    hide.setAttribute("aria-pressed", on ? "true" : "false");
+    document.querySelector(".wrap").classList.toggle("hide-done", on);
+  });
+})();
+</script>
+</body>
+</html>
