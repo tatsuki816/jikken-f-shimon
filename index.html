@@ -66,6 +66,13 @@ details.card summary::-webkit-details-marker { display: none; }
 .q::before { content: "Q"; color: var(--accent); font-family: var(--f-mono); margin-right: .5em; }
 details.card[data-done="1"] .q::before { content: "✓"; color: var(--ok); }
 .chip { justify-self: start; font-size: .75rem; background: var(--mark-bg); color: var(--mark-fg); border-radius: 4px; padding: 0 6px; letter-spacing: .02em; }
+.chip.new { background: var(--accent-soft); color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fig { margin: 0; display: grid; gap: 4px; }
+.fig img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: #ffffff; }
+.fig.wide { overflow-x: auto; }
+.fig.wide img { max-width: none; width: 820px; }
+.fig figcaption { font-size: .8rem; color: var(--muted); }
 .a { padding: 0 14px 14px; display: grid; gap: 10px; min-width: 0; }
 .say { margin: 0; border-left: 3px solid var(--accent); padding-left: 12px; }
 .pt { margin: 0; padding-left: 1.2em; color: var(--muted); font-size: .93rem; }
@@ -85,11 +92,11 @@ th:first-child, td:first-child { text-align: left; }
 </style>
 </head>
 <body>
-
 <div class="wrap" id="top">
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
+    <p class="when">最終更新 <span id="updated">10/14 06:31</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -146,6 +153,24 @@ DDIndex&lt;int&gt; index(z);
 mpz_class x = index.countMP();</pre>
     </div></details>
 
+    <details class="card" id="f1-1-simpaths"><summary><span class="q">SimPathsは何をしている？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">格子グラフの頂点1からn²へのすべてのパスを表すZDDを作って返す関数です。パスの数はSimPathsではなく、そのZDDをDDIndexに渡して、countMPで数えました。</p>
+      <ul class="pt">
+        <li>手引き書の説明は、頂点番号sとtを結ぶパスを表すZBDDインスタンスを返す、だけ。試問はここまで言えれば十分</li>
+        <li>中身は手引き書に無い話。辺を1本ずつ、使うか使わないかで枝分かれさせ、パスの条件を破ったらその時点で0、最後まで満たせば1にしてZDDを作る</li>
+        <li>パスの条件：始点と終点は使う辺がちょうど1本、それ以外の頂点は0本か2本、使った辺が全部1本につながっている</li>
+        <li>速い理由：決めた辺と決めていない辺の境目にある頂点の様子が同じ節点は、そこから先の続きも同じなので1つにまとめる。将棋で手順が違っても同じ局面なら、その先の展開は同じなのと同じ</li>
+      </ul>
+      <figure class="fig"><img src="図/解説図_F1_SimPathsの作り方_2x2.png" alt="2×2でSimPathsが辺を1本ずつ決めてZDDを作る様子" loading="lazy"><figcaption>2×2で、辺を1本ずつ決めて組み立てる様子</figcaption></figure>
+      <figure class="fig"><img src="図/解説図_F1_SimPathsでまとまる例_3x3.png" alt="3×3で境目の様子が同じ節点がまとまる例" loading="lazy"><figcaption>3×3で、境目の様子が同じならまとまる例</figcaption></figure>
+      <div class="tbl"><table>
+        <tr><th>n</th><th>パスの本数</th><th>ZDDの分岐節点数</th></tr>
+        <tr><td>3</td><td>12</td><td>27</td></tr>
+        <tr><td>4</td><td>184</td><td>134</td></tr>
+        <tr><td>5</td><td>8,512</td><td>583</td></tr>
+      </table></div>
+    </div></details>
+
     <details class="card" id="f1-1-setgrid"><summary><span class="q">10×10なのに、なんでSetGrid(9,9)なの？</span></summary><div class="a">
       <p class="say">SetGridの引数は、x軸とy軸それぞれの辺の本数だからです。SetGrid(x, y)で(x+1)×(y+1)の格子ができるので、n×nの格子にはn−1を渡します。</p>
       <ul class="pt"><li>nを変えるたびに、SetGridの引数と終点のn²を書き換えてコンパイルし直した</li></ul>
@@ -159,8 +184,62 @@ mpz_class x = index.countMP();</pre>
       </ul>
     </div></details>
 
+    <details class="card" id="f1-1-hanni"><summary><span class="q">intはどこまで表せる？表1のどこで超える？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">intは32ビットで、約21億、正確には2147483647までです。表1では7×7の575780564までは入りますが、8×8の789360053252で超えます。64ビットのlong longでも約9.2×10¹⁸までなので、10×10の約4.1×10¹⁹で超えます。</p>
+      <div class="tbl"><table>
+        <tr><th>型</th><th>ビット</th><th>最大値</th><th>超える格子</th></tr>
+        <tr><td>int</td><td>32</td><td>2147483647（約2.1×10⁹）</td><td>8×8</td></tr>
+        <tr><td>long long</td><td>64</td><td>9223372036854775807（約9.2×10¹⁸）</td><td>10×10</td></tr>
+        <tr><td>unsigned long long</td><td>64</td><td>18446744073709551615（約1.8×10¹⁹）</td><td>10×10</td></tr>
+        <tr><td>mpz_class</td><td>可変</td><td>上限なし（メモリが続く限り）</td><td>なし</td></tr>
+      </table></div>
+      <ul class="pt">
+        <li>Macで std::numeric_limits を表示して確かめた値。貸与PCのUbuntuでもintは32ビット、long longは64ビット</li>
+        <li>intの最小値は−2147483648。符号付き32ビットなので、およそ±2の31乗</li>
+        <li>9×9の3266598486981642はlong longなら入る</li>
+        <li>F1-3の方法1と方法2は数をlong longで数えているが、測ったのは7×7まで（575780564）なので足りている</li>
+      </ul>
+    </div></details>
+
     <details class="card" id="f1-1-ddindex"><summary><span class="q">DDIndex&lt;int&gt;のintは何？</span></summary><div class="a">
-      <p class="say">ZDDの節点ごとに持たせる追加の情報の型を指定する所です。今回は追加の情報を使わないので、手引き書の指示どおりintにしました。</p>
+      <p class="say">DDIndexの&lt; &gt;の中は、節点ごとに持たせる追加の情報の型です。今回はcountMPで数えるだけで追加の情報を使わないので、手引き書の指示どおりintにしました。</p>
+      <ul class="pt"><li>レポートの3.1にほぼ同じ文がある。この1文が言えれば十分。下の3枚はその中身</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-1-yomikata"><summary><span class="q">DDIndex&lt;int&gt; index(z); はどう読む？なんでindex&lt;z&gt;じゃない？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">C++の変数宣言は、型、変数名、作るときに渡す値、の順に並びます。DDIndex&lt;int&gt;が型、indexが自分で付けた変数名、(z)は作る瞬間にコンストラクタへ渡すZDDです。</p>
+<pre>DDIndex&lt;int&gt;   index     (z);
+   型          変数名   作るときに渡す値</pre>
+      <ul class="pt">
+        <li>&lt; &gt;に入れるのは型、( )に入れるのは値。zは型ではなく値なので( )に入る</li>
+        <li>F2で自分で書いた std::vector&lt;int&gt; closest(n, n); も同じ形。intを入れる配列型の変数closestを、要素n個を全部nにして作る</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-1-zgata"><summary><span class="q">intってことは、zはint型なの？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">違います。zはZBDD型で、SimPathsが作ったZDDそのものです。&lt;int&gt;はzとは関係なく、節点ごとの追加の情報の型を決めているだけです。</p>
+<pre>ZBDD z = gb.SimPaths(1, 100);   // z は ZBDD 型
+DDIndex&lt;int&gt; index(z);          // int は付箋の型</pre>
+    </div></details>
+
+    <details class="card" id="f1-1-value"><summary><span class="q">追加の情報って何？使いたいときはどうする？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">ZDDの節点は、要素、0枝の先、1枝の先の3つを最初から持っています。追加の情報は、それとは別に自分の計算のために節点ごとに書き込める付箋のようなもので、node.valueで読み書きします。&lt;int&gt;はその付箋に書く値の型です。</p>
+      <figure class="fig"><img src="図/解説図_F1_DDIndexの追加の情報.png" alt="ZDDの節点が最初から持つ情報と、自分で貼る付箋の例" loading="lazy"><figcaption>左が最初から持っている情報、右が付箋。例は、その節点から1まで行ける道の数</figcaption></figure>
+<pre>index.terminal(0).value = 0;      // 0終端の付箋に 0
+index.terminal(1).value = 1;      // 1終端の付箋に 1
+for (int level = 1; level &lt;= index.height(); ++level) {   // 下の段から
+    for (ullint j = 0; j &lt; index.size(level); ++j) {      // 段の節点を1個ずつ
+        DDNode&lt;int&gt; node = index.getNode(level, j);
+        node.value = node.child(0).value + node.child(1).value;
+    }
+}
+std::cout &lt;&lt; index.root().value;  // 根の付箋がパスの総数</pre>
+      <ul class="pt">
+        <li>Macで実際に動かした結果：3×3は付箋でも countMP でも12</li>
+        <li>10×10を int の付箋で数えると2137525924という間違った数になった。パスは約4.1×10¹⁹本でintに入らないから。DDIndex&lt;mpz_class&gt;にすると41044208702632496804で countMP と一致</li>
+        <li>countMP は中で mpz_class の専用の表を使うので、付箋は使わない。だから今回はintのままでいい</li>
+        <li>ライブラリのソースでは、DDIndexの中に節点ごとにT型の値を置く表 std::map&lt;bddp, T&gt; storage_ がある。レポートの範囲の外</li>
+      </ul>
     </div></details>
 
     <details class="card" id="f1-1-kekka"><summary><span class="q">表1の結果を説明して。パスの数と時間はどう変わった？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
@@ -198,6 +277,20 @@ mpz_class x = index.countMP();</pre>
         <li>節点共有規則：要素が同じで、0枝の行き先と1枝の行き先も同じ節点を1つにまとめる</li>
         <li>パスは{a, c}と{b, d}の2本</li>
       </ul>
+      <div class="chips"><span class="chip new">10/14に質問して足した所</span></div>
+      <ul class="pt">
+        <li>手順：要素の順番を決めて二分決定木を書く。葉はパスなら1、違えば0。次に葉を0と1の1個ずつにまとめ、2つの規則を使えなくなるまで繰り返す。下の段からやると楽</li>
+        <li>消していい理由：1枝が0を指すのは、その要素を使うと必ずダメということ。使う選択肢が無いので聞く意味が無い。だからZDDでは道に出てこない要素は使わないと読む。ゼロサプレスの名前の由来</li>
+        <li>まとめていい理由：行き先が全く同じなら、その先の中身も全く同じなので2個置く意味が無い</li>
+        <li>2×2では、下の葉が全部0のかたまりは削除規則の繰り返しで丸ごと0になり、さらに赤の3個が消え、緑のa、b、c、dの4個が残る。cとdは要素が違うのでまとまらない</li>
+      </ul>
+      <figure class="fig"><img src="図/解説図_F1_ZDDへの簡約.png" alt="手引き書の例を3段階でZDDに簡約する様子" loading="lazy"><figcaption>手引き書の例で、削除規則のあとに共有規則をかける3段階</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-2_二分決定木からの簡約.png" alt="2×2の二分決定木で消える節点と残る節点" loading="lazy"><figcaption>2×2の二分決定木。灰と赤が消え、緑の4個が残る。横にスクロールできる</figcaption></figure>
+<pre>a ─使う────→ c ─使う→ 1
+│             └使わない→ 0
+└使わない→ b ─使う→ d ─使う→ 1
+            │        └使わない→ 0
+            └使わない→ 0</pre>
     </div></details>
 
     <details class="card" id="f1-2-henka"><summary><span class="q">実際どれくらい小さくなった？同じ情報でかかるコストの違いは？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
