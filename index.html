@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 06:50</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:03</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -378,6 +378,14 @@ std::cout &lt;&lt; index.root().value;  // 根の付箋がパスの総数</pre>
       </ul>
     </div></details>
 
+    <details class="card" id="f1-3-longlong"><summary><span class="q">long longって何？2語で1つの型？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">そうです。long longの2語で1つの型の名前で、64ビットの整数です。intは32ビットで約21億までですが、long longは約9.2×10¹⁸まで入ります。方法1と方法2のパスの数はlong longで数えました。</p>
+      <ul class="pt">
+        <li>unsigned long long も3語で1つの型。マイナスを使わない64ビットの整数</li>
+        <li>long long count = 0; は、long long型の変数countを0で作る、という意味。int x = 0; と同じ形</li>
+      </ul>
+    </div></details>
+
     <details class="card" id="f1-3-code1"><summary><span class="q">方法1のcount_by_priorityを1行ずつ説明して</span><span class="chip new">10/14に質問</span></summary><div class="a">
 <pre>const int dir[4] = {+1, +n, -1, -n};       // 右、下、左、上
 const int goal = n * n;
@@ -415,6 +423,7 @@ while (!path.empty()) {                // スタックが空になるまで
 
     <details class="card" id="f1-3-trace1"><summary><span class="q">方法1を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
       <p class="say">頂点は上の段が1、2、下の段が3、4です。右下左上の順に試して、ゴールの4に2回着くので2本です。</p>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法1のスタックをコマ割りで.png" alt="2×2で方法1のpathとnext_dirがどう変わるかのコマ割り" loading="lazy"><figcaption>10/14に質問して足した図。next_dirは頂点ごとのしおり。横にスクロールできる</figcaption></figure>
       <div class="tbl"><table class="trace">
         <tr><th>今いる頂点</th><th>試す方向</th><th>先</th><th>結果</th><th>path</th></tr>
         <tr><td>1</td><td>右</td><td>2</td><td>進む</td><td>1, 2</td></tr>
