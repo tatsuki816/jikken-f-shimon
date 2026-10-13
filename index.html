@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 07:21</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:27</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -423,6 +423,7 @@ while (!path.empty()) {                // スタックが空になるまで
       <ul class="pt">
         <li>while (!path.empty())：! は否定。path.empty() は空なら true なので、!path.empty() は空じゃなければ true。空じゃない間ずっと回る</li>
         <li>continue：そこから下を飛ばして、すぐループの先頭、つまり while の判定に戻る。ゲームで、このターンはここまでにして次のターンへ行く感じ</li>
+        <li>次の周の始まり方：まず while の判定 !path.empty() を確かめ、true なら中の1行目 int v = path.top(); から実行する。下の if の continue のときは path を変えていないので、v は同じ頂点のまま</li>
         <li>進む4行：しおりの方向の隣 w を出す、しおりを先に1つ進める、進めなければ continue、進めるなら w に印を付けて w としおり0を積む</li>
       </ul>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法1のループの1周.png" alt="方法1のループ1周の流れと、3×3で進めるときと進めないときの例" loading="lazy"><figcaption>左がループ1周の流れ。右が3×3の例。横にスクロールできる</figcaption></figure>
