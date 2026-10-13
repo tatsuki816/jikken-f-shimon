@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 07:27</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:32</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -415,6 +415,7 @@ while (!path.empty()) {                // スタックが空になるまで
 }</pre>
       <ul class="pt">
         <li>戻る条件は2つ。ゴールに着いたときと、next_dir が4、つまり4方向とも試し終えたとき</li>
+        <li>方向の番号は0から3だが、next_dir は次に試す番号なので、3の上を試すと ++ で4になる。4は試す方向が残っていない印。dir[4] は無いが、4なら上の if で先に戻るので dir[4] は読まない</li>
         <li>continue はループの残りを飛ばして先頭に戻る命令。戻ったあとは、1つ前の頂点が path の一番上になっているので、その続きの方向から試す</li>
         <li>next_dir.top()++ を進む前にやるのが大事。進んでも進まなくても、この方向は試し済みになる。だから戻ってきたときに同じ方向をもう一度試さない</li>
         <li>used[v] = false で印を外すのは、別の道ではその頂点を通っていいから</li>
