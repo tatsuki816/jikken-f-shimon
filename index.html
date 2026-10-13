@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 07:12</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:16</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -456,6 +456,15 @@ while (!path.empty()) {                // スタックが空になるまで
         <li>w が0や−1のような格子の外の番号のとき、can_move が false なので !can_move が true になり、used[w] は読まれない。だから used の範囲の外を読まずに済む</li>
         <li>レポートと提出したPDFでは、この if が used[w] = true より前にあることを確認した</li>
       </ul>
+      <div class="chips"><span class="chip new">10/14に質問して足した所</span></div>
+      <p class="say">!can_move(v, w, n) || used[w] は、wへ行けない、または、wはもう通った、という意味です。どちらか1つでも当てはまれば true になって continue し、どちらも当てはまらないときだけ進みます。</p>
+      <div class="tbl"><table class="trace">
+        <tr><th>例 3×3</th><th>can_move</th><th>!can_move</th><th>used[w]</th><th>全体</th><th>動き</th></tr>
+        <tr><td>5から右の6、6は未通過</td><td>true</td><td>false</td><td>false</td><td>false</td><td>進む</td></tr>
+        <tr><td>5から上の2、2は通過済み</td><td>true</td><td>false</td><td>true</td><td>true</td><td>continue</td></tr>
+        <tr><td>3から右の4、右端の先</td><td>false</td><td>true</td><td>見ない</td><td>true</td><td>continue</td></tr>
+      </table></div>
+      <ul class="pt"><li>|| はまたは。! は否定。|| は左が true なら右を見ないので、3段目では used[4] を読まない</li></ul>
     </div></details>
 
     <details class="card" id="f1-3-code2"><summary><span class="q">方法2のarrangeを1行ずつ説明して</span><span class="chip new">10/14に質問</span></summary><div class="a">
