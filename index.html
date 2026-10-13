@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 07:34</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:36</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -514,6 +514,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
 
     <details class="card" id="f1-3-trace2"><summary><span class="q">方法2を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
       <p class="say">間の頂点は2と3の2個です。空の並べ方から始めて、5通りを調べて、そのうち2通りがパスでした。</p>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の再帰をコマ割りで.png" alt="2×2で方法2のarrangeの呼び出しがどう積み重なるかのコマ割り" loading="lazy"><figcaption>10/14に質問して足した図。方法1は path に頂点を積んだが、方法2は arrange の呼び出し自体が積み重なる。横にスクロールできる</figcaption></figure>
       <div class="tbl"><table class="trace">
         <tr><th>順</th><th>order</th><th>調べる並び</th><th>結果</th></tr>
         <tr><td>1</td><td>空</td><td>1, 4</td><td>隣ではないので駄目</td></tr>
