@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 07:16</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:21</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -465,6 +465,11 @@ while (!path.empty()) {                // スタックが空になるまで
         <tr><td>3から右の4、右端の先</td><td>false</td><td>true</td><td>見ない</td><td>true</td><td>continue</td></tr>
       </table></div>
       <ul class="pt"><li>|| はまたは。! は否定。|| は左が true なら右を見ないので、3段目では used[4] を読まない</li></ul>
+      <div class="tbl"><table class="trace">
+        <tr><th>continue の場所</th><th>起きるとき</th><th>そのあと</th></tr>
+        <tr><td>上の if、しおりが4</td><td>4方向全部だめ、またはゴール</td><td>pop して1つ前の頂点に戻る</td></tr>
+        <tr><td>下の if、!can_move || used[w]</td><td>今試した1方向だけがだめ</td><td>同じ頂点のまま、次の周で次の方向を試す</td></tr>
+      </table></div>
     </div></details>
 
     <details class="card" id="f1-3-code2"><summary><span class="q">方法2のarrangeを1行ずつ説明して</span><span class="chip new">10/14に質問</span></summary><div class="a">
