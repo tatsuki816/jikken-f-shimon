@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 06:37</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 06:50</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -584,6 +584,20 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
 
     <details class="card" id="f2-2-nai"><summary><span class="q">条件を満たす点が無いときはどうなる？</span></summary><div class="a">
       <p class="say">何も追加しません。min_r_indexがnのままなら追加しないようにしました。最初はこの場合を考えていなくて、2つ目のループが正しく動かなかったので、アルゴリズムと1行ずつ照らし合わせて直しました。</p>
+    </div></details>
+
+    <details class="card" id="f2-2-hitsuyou"><summary><span class="q">if(min_r_index != n) の条件っている？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">いります。鈍角になる点rが1つも無いと、min_r_indexは最初に入れたnのままです。点の番号は0からn−1までなので、この条件が無いとpoints.at(n)で存在しない点を取り出そうとして、プログラムが止まります。アルゴリズムの8行目の、条件を満たす点rが存在するならという部分にあたります。</p>
+<pre>int min_r_index = n;           // まだ見つかっていない印として n
+...                            // 鈍角の点を探す
+if(min_r_index != n){          // 見つかったときだけ
+    Segment(p, points.at(min_r_index));   // 線分を作る
+}</pre>
+      <ul class="pt">
+        <li>鈍角の点が無いのは、ほかの点が全部qと同じ側にあるとき。例えば一直線に並んだ点の端の点は、ほかの点が全部qの先にあるので、どれも角rpqが鋭角になる</li>
+        <li>Macで条件を外した版を作って試した。一直線に並んだ4点でも、配布のexample.txtでも、エラー: vector と出て止まった。条件を付けた本番の版は最後まで動いた</li>
+        <li>.at() は範囲の外を指すとエラーを出して止まる取り出し方。点が無いときは何も追加しない、が正しい動き</li>
+      </ul>
     </div></details>
 
     <details class="card" id="f2-2-koushin"><summary><span class="q">2つ目のループでもclosestを更新しているのはなんで？</span></summary><div class="a">
