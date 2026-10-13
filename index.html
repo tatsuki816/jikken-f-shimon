@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 07:03</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 07:12</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -419,6 +419,13 @@ while (!path.empty()) {                // スタックが空になるまで
         <li>next_dir.top()++ を進む前にやるのが大事。進んでも進まなくても、この方向は試し済みになる。だから戻ってきたときに同じ方向をもう一度試さない</li>
         <li>used[v] = false で印を外すのは、別の道ではその頂点を通っていいから</li>
       </ul>
+      <div class="chips"><span class="chip new">10/14に質問して足した所</span></div>
+      <ul class="pt">
+        <li>while (!path.empty())：! は否定。path.empty() は空なら true なので、!path.empty() は空じゃなければ true。空じゃない間ずっと回る</li>
+        <li>continue：そこから下を飛ばして、すぐループの先頭、つまり while の判定に戻る。ゲームで、このターンはここまでにして次のターンへ行く感じ</li>
+        <li>進む4行：しおりの方向の隣 w を出す、しおりを先に1つ進める、進めなければ continue、進めるなら w に印を付けて w としおり0を積む</li>
+      </ul>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法1のループの1周.png" alt="方法1のループ1周の流れと、3×3で進めるときと進めないときの例" loading="lazy"><figcaption>左がループ1周の流れ。右が3×3の例。横にスクロールできる</figcaption></figure>
     </div></details>
 
     <details class="card" id="f1-3-trace1"><summary><span class="q">方法1を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
