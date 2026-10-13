@@ -86,6 +86,7 @@ pre { background: var(--code-bg); border-radius: 8px; padding: 10px 12px; margin
 table { border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
 th, td { border-bottom: 1px solid var(--line); padding: 3px 8px; text-align: right; white-space: nowrap; }
 th:first-child, td:first-child { text-align: left; }
+table.trace td, table.trace th { text-align: left; }
 .hide-done details.card[data-done="1"] { display: none; }
 @media (prefers-reduced-motion: no-preference) { details.card[open] .a { animation: fade .15s ease-out; } }
 @keyframes fade { from { opacity: .4; } to { opacity: 1; } }
@@ -96,7 +97,7 @@ th:first-child, td:first-child { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 06:31</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 06:35</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -188,16 +189,16 @@ mpz_class x = index.countMP();</pre>
       <p class="say">intは32ビットで、約21億、正確には2147483647までです。表1では7×7の575780564までは入りますが、8×8の789360053252で超えます。64ビットのlong longでも約9.2×10¹⁸までなので、10×10の約4.1×10¹⁹で超えます。</p>
       <div class="tbl"><table>
         <tr><th>型</th><th>ビット</th><th>最大値</th><th>超える格子</th></tr>
-        <tr><td>int</td><td>32</td><td>2147483647（約2.1×10⁹）</td><td>8×8</td></tr>
-        <tr><td>long long</td><td>64</td><td>9223372036854775807（約9.2×10¹⁸）</td><td>10×10</td></tr>
-        <tr><td>unsigned long long</td><td>64</td><td>18446744073709551615（約1.8×10¹⁹）</td><td>10×10</td></tr>
-        <tr><td>mpz_class</td><td>可変</td><td>上限なし（メモリが続く限り）</td><td>なし</td></tr>
+        <tr><td>int</td><td>32</td><td>2147483647、約2.1×10⁹</td><td>8×8</td></tr>
+        <tr><td>long long</td><td>64</td><td>9223372036854775807、約9.2×10¹⁸</td><td>10×10</td></tr>
+        <tr><td>unsigned long long</td><td>64</td><td>18446744073709551615、約1.8×10¹⁹</td><td>10×10</td></tr>
+        <tr><td>mpz_class</td><td>可変</td><td>メモリが続く限り上限なし</td><td>なし</td></tr>
       </table></div>
       <ul class="pt">
         <li>Macで std::numeric_limits を表示して確かめた値。貸与PCのUbuntuでもintは32ビット、long longは64ビット</li>
         <li>intの最小値は−2147483648。符号付き32ビットなので、およそ±2の31乗</li>
         <li>9×9の3266598486981642はlong longなら入る</li>
-        <li>F1-3の方法1と方法2は数をlong longで数えているが、測ったのは7×7まで（575780564）なので足りている</li>
+        <li>F1-3の方法1と方法2は数をlong longで数えているが、測ったのは7×7の575780564までなので足りている</li>
       </ul>
     </div></details>
 
@@ -339,6 +340,154 @@ std::cout &lt;&lt; index.root().value;  // 根の付箋がパスの総数</pre>
     <details class="card" id="f1-3-hashi"><summary><span class="q">格子の端はどうやって見分けた？</span></summary><div class="a">
       <p class="say">頂点の番号で見分けました。右端はnで割った余りが0、左端は余りが1なので、そこからは右や左に動けません。下端は番号にnを足すとn²を超え、上端はnを引くと1より小さくなるので、そこからは下や上に動けません。</p>
       <ul class="pt"><li>3×3なら3、6、9が右端</li></ul>
+    </div></details>
+
+    <h3>F1-3のプログラムを1行ずつ</h3>
+    <details class="card" id="f1-3-kousei"><summary><span class="q">プログラム全体はどういう部品でできてる？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">4つの部品でできています。1歩で動けるかを判定するcan_move、方法1のcount_by_priority、方法2のarrange、引数を受け取ってどちらかを呼ぶmainです。</p>
+      <div class="tbl"><table class="trace">
+        <tr><th>部品</th><th>役割</th></tr>
+        <tr><td>can_move(a, b, n)</td><td>頂点aからbへ1歩で動けるか。両方の方法で使う</td></tr>
+        <tr><td>count_by_priority(n)</td><td>方法1。スタックで右下左上の順に進んで戻る</td></tr>
+        <tr><td>arrange(order, used, n)</td><td>方法2。並べ方を再帰で全部作って調べる</td></tr>
+        <tr><td>main</td><td>./naive n 方法 の n と方法を受け取って呼び分ける</td></tr>
+      </table></div>
+      <ul class="pt"><li>#include "CountPaths.hpp" は配布されたnaive.cppに入っていたもの。中のCountPathsクラスは、このプログラムでは使っていない</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-3-canmove"><summary><span class="q">can_moveを1行ずつ説明して</span><span class="chip new">10/14に質問</span></summary><div class="a">
+<pre>bool can_move(int a, int b, int n) {
+  if (b == a + 1) return a % n != 0;      // 右へ
+  if (b == a - 1) return a % n != 1;      // 左へ
+  if (b == a + n) return a + n &lt;= n * n;  // 下へ
+  if (b == a - n) return a - n &gt;= 1;      // 上へ
+  return false;
+}</pre>
+      <p class="say">bがaの右、左、下、上のどれにあたるかを番号の差で見分けて、その方向に動けるかを返します。右なら、aが右端、つまりnで割った余りが0でなければ動けます。左は余りが1でなければ、下はa+nがn²以下なら、上はa−nが1以上なら動けます。4つのどれでもなければ隣ではないのでfalseです。</p>
+      <ul class="pt">
+        <li>bool は true か false を返す型</li>
+        <li>% は割った余り。3×3なら 3 % 3 = 0、6 % 3 = 0 で、3と6は右端</li>
+        <li>右端の a から a+1 は、番号は1つ違いでも次の行の左端。だから番号の差だけでは駄目で、端の判定が要る</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-code1"><summary><span class="q">方法1のcount_by_priorityを1行ずつ説明して</span><span class="chip new">10/14に質問</span></summary><div class="a">
+<pre>const int dir[4] = {+1, +n, -1, -n};       // 右、下、左、上
+const int goal = n * n;
+std::vector&lt;bool&gt; used(n * n + 1, false);  // 通った頂点の印
+std::stack&lt;int&gt; path;                      // 通ってきた頂点
+std::stack&lt;int&gt; next_dir;                  // 各頂点で次に試す方向
+long long count = 0;</pre>
+      <ul class="pt">
+        <li>dir：番号に足すと右、下、左、上の隣になる値の表。dir[0]が右で、dir[3]が上</li>
+        <li>used：頂点番号をそのまま添字に使うので n²+1 個作る。0番は使わない。最初は全部 false</li>
+        <li>path と next_dir：2つのスタックは同じ高さで並んでいて、同じ段が同じ頂点の情報。path の一番上が今いる頂点、next_dir の一番上がそこで次に試す方向の番号</li>
+        <li>count：見つけたパスの数。long long は64ビットの整数</li>
+      </ul>
+<pre>path.push(1);  next_dir.push(0);  used[1] = true;   // 1から、右を試すところから
+while (!path.empty()) {                // スタックが空になるまで
+  int v = path.top();                  // 今いる頂点
+  if (v == goal || next_dir.top() == 4) {
+    if (v == goal) count++;            // ゴールなら1本数える
+    used[v] = false;                   // 印を外して
+    path.pop();  next_dir.pop();       // 1つ前に戻る
+    continue;                          // ループの先頭へ
+  }
+  int w = v + dir[next_dir.top()];     // 試す先
+  next_dir.top()++;                    // この方向は試し済みにする
+  if (!can_move(v, w, n) || used[w]) continue;   // 進めなければ次の方向へ
+  used[w] = true;  path.push(w);  next_dir.push(0);  // 進む。wでは右から試す
+}</pre>
+      <ul class="pt">
+        <li>戻る条件は2つ。ゴールに着いたときと、next_dir が4、つまり4方向とも試し終えたとき</li>
+        <li>continue はループの残りを飛ばして先頭に戻る命令。戻ったあとは、1つ前の頂点が path の一番上になっているので、その続きの方向から試す</li>
+        <li>next_dir.top()++ を進む前にやるのが大事。進んでも進まなくても、この方向は試し済みになる。だから戻ってきたときに同じ方向をもう一度試さない</li>
+        <li>used[v] = false で印を外すのは、別の道ではその頂点を通っていいから</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-trace1"><summary><span class="q">方法1を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">頂点は上の段が1、2、下の段が3、4です。右下左上の順に試して、ゴールの4に2回着くので2本です。</p>
+      <div class="tbl"><table class="trace">
+        <tr><th>今いる頂点</th><th>試す方向</th><th>先</th><th>結果</th><th>path</th></tr>
+        <tr><td>1</td><td>右</td><td>2</td><td>進む</td><td>1, 2</td></tr>
+        <tr><td>2</td><td>右</td><td>3</td><td>右端なので駄目</td><td>1, 2</td></tr>
+        <tr><td>2</td><td>下</td><td>4</td><td>進む</td><td>1, 2, 4</td></tr>
+        <tr><td>4</td><td></td><td></td><td>ゴール、1本目。戻る</td><td>1, 2</td></tr>
+        <tr><td>2</td><td>左</td><td>1</td><td>通った頂点なので駄目</td><td>1, 2</td></tr>
+        <tr><td>2</td><td>上</td><td>0</td><td>上端なので駄目</td><td>1, 2</td></tr>
+        <tr><td>2</td><td></td><td></td><td>4方向終わり。戻る</td><td>1</td></tr>
+        <tr><td>1</td><td>下</td><td>3</td><td>進む</td><td>1, 3</td></tr>
+        <tr><td>3</td><td>右</td><td>4</td><td>進む</td><td>1, 3, 4</td></tr>
+        <tr><td>4</td><td></td><td></td><td>ゴール、2本目。戻る</td><td>1, 3</td></tr>
+        <tr><td>3</td><td>下、左、上</td><td>5, 2, 1</td><td>下端、左端、通った頂点で全部駄目。戻る</td><td>1</td></tr>
+        <tr><td>1</td><td>左、上</td><td>0, −1</td><td>左端、上端で駄目。戻る</td><td>空</td></tr>
+      </table></div>
+      <ul class="pt"><li>path が空になってループが終わり、count は2。Macで ./naive 2 1 を実行して2が出ることを確かめた</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-3-tanraku"><summary><span class="q">判定の if を進む処理より先に置いてるのはなんで？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">進めるかどうかを確かめてから進むためです。先に used[w] = true や path.push(w) をすると、格子の外の頂点や、すでに通った頂点にも進んでしまいます。</p>
+      <ul class="pt">
+        <li>|| は、左が true ならその時点で全体が true と決まるので、右は調べない。これを短絡評価という</li>
+        <li>w が0や−1のような格子の外の番号のとき、can_move が false なので !can_move が true になり、used[w] は読まれない。だから used の範囲の外を読まずに済む</li>
+        <li>レポートと提出したPDFでは、この if が used[w] = true より前にあることを確認した</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-code2"><summary><span class="q">方法2のarrangeを1行ずつ説明して</span><span class="chip new">10/14に質問</span></summary><div class="a">
+<pre>long long count_arranged = 0;   // パスになった並べ方の数
+long long count_tried = 0;      // 調べた並べ方の数
+
+void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;used, int n) {
+  count_tried++;                         // 今の並べ方を1つ調べる
+  bool ok = true;
+  int prev = 1;                          // 1から始める
+  for (int v : order) {                  // 並べた頂点を前から順に
+    if (!can_move(prev, v, n)) { ok = false; break; }
+    prev = v;
+  }
+  if (ok &amp;&amp; can_move(prev, n * n, n)) count_arranged++;   // 最後からn²へ動ければパス
+
+  for (int v = 2; v &lt;= n * n - 1; v++) { // 間の頂点を1つずつ
+    if (used[v]) continue;               // もう並べた頂点は飛ばす
+    used[v] = true;  order.push_back(v); // 後ろに足して
+    arrange(order, used, n);             // その並べ方で自分を呼ぶ
+    order.pop_back();  used[v] = false;  // 足した頂点を外して元に戻す
+  }
+}</pre>
+      <ul class="pt">
+        <li>order は今の並べ方で、1とn²の間に並べた頂点。最初は空</li>
+        <li>前半は今の並べ方の判定。1、order の頂点、n²の順に、隣どうしが全部 can_move で動ければ1本数える</li>
+        <li>後半は次の並べ方を作る所。まだ使っていない頂点を1つ後ろに足して自分を呼び、戻ってきたら外して次の頂点を試す</li>
+        <li>for (int v : order) は order の中身を前から1つずつ v に入れて回す書き方</li>
+        <li>&amp;order の &amp; は参照。配列をコピーせず、全部の呼び出しで同じ配列を使い回す。だから足したら必ず外して戻す</li>
+        <li>2つのカウンタを関数の外に置いているのは、再帰のどの段からも同じ数に足すため</li>
+        <li>関数の終わりまで来ると、呼び出し元の for の続きに戻る。最初の呼び出しの for が終わると全体が終わる</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-trace2"><summary><span class="q">方法2を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">間の頂点は2と3の2個です。空の並べ方から始めて、5通りを調べて、そのうち2通りがパスでした。</p>
+      <div class="tbl"><table class="trace">
+        <tr><th>順</th><th>order</th><th>調べる並び</th><th>結果</th></tr>
+        <tr><td>1</td><td>空</td><td>1, 4</td><td>隣ではないので駄目</td></tr>
+        <tr><td>2</td><td>2</td><td>1, 2, 4</td><td>パス</td></tr>
+        <tr><td>3</td><td>2, 3</td><td>1, 2, 3, 4</td><td>2から3は右端なので駄目</td></tr>
+        <tr><td>4</td><td>3</td><td>1, 3, 4</td><td>パス</td></tr>
+        <tr><td>5</td><td>3, 2</td><td>1, 3, 2, 4</td><td>3から2は左端なので駄目</td></tr>
+      </table></div>
+      <ul class="pt"><li>Macで ./naive 2 2 を実行すると、2（調べた並べ方 5 通り）と出る。3×3は13700通り</li></ul>
+    </div></details>
+
+    <details class="card" id="f1-3-main"><summary><span class="q">mainのargcとargvは何？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">実行するときに打った言葉を受け取る仕組みです。./naive 7 1 と打つと、argc が3、argv[1] が文字列の 7、argv[2] が文字列の 1 になります。std::atoi で文字列を整数に直して、n と方法の番号にしています。</p>
+      <ul class="pt">
+        <li>argc は言葉の個数で、プログラム名の ./naive も数えるので3</li>
+        <li>argc が3より小さい、つまり n か方法を打ち忘れたら、使い方を表示して return 1 で終わる</li>
+        <li>return 0 は正常に終わった、return 1 は何かおかしくて終わった、という合図</li>
+        <li>方法が1なら count_by_priority、2なら arrange を呼び、結果を表示する</li>
+      </ul>
     </div></details>
 
     <details class="card" id="f1-3-hikisuu"><summary><span class="q">数値は変えられる？増やしたらどうなった？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
