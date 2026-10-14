@@ -70,8 +70,8 @@ details.card[data-done="1"] .q::before { content: "✓"; color: var(--ok); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .fig { margin: 0; display: grid; gap: 4px; }
 .fig img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: #ffffff; }
-.fig.wide { overflow-x: auto; }
-.fig.wide img { max-width: none; width: 820px; }
+.fig.wide img { width: 100%; }
+.fig a { display: block; }
 .fig figcaption { font-size: .8rem; color: var(--muted); }
 .a { padding: 0 14px 14px; display: grid; gap: 10px; min-width: 0; }
 .say { margin: 0; border-left: 3px solid var(--accent); padding-left: 12px; }
@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:45</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:47</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -162,8 +162,8 @@ mpz_class x = index.countMP();</pre>
         <li>パスの条件：始点と終点は使う辺がちょうど1本、それ以外の頂点は0本か2本、使った辺が全部1本につながっている</li>
         <li>速い理由：決めた辺と決めていない辺の境目にある頂点の様子が同じ節点は、そこから先の続きも同じなので1つにまとめる。将棋で手順が違っても同じ局面なら、その先の展開は同じなのと同じ</li>
       </ul>
-      <figure class="fig"><img src="図/解説図_F1_SimPathsの作り方_2x2.png" alt="2×2でSimPathsが辺を1本ずつ決めてZDDを作る様子" loading="lazy"><figcaption>2×2で、辺を1本ずつ決めて組み立てる様子</figcaption></figure>
-      <figure class="fig"><img src="図/解説図_F1_SimPathsでまとまる例_3x3.png" alt="3×3で境目の様子が同じ節点がまとまる例" loading="lazy"><figcaption>3×3で、境目の様子が同じならまとまる例</figcaption></figure>
+      <figure class="fig"><a href="図/解説図_F1_SimPathsの作り方_2x2.png" target="_blank"><img src="図/解説図_F1_SimPathsの作り方_2x2.png" alt="2×2でSimPathsが辺を1本ずつ決めてZDDを作る様子" loading="lazy"></a><figcaption>2×2で、辺を1本ずつ決めて組み立てる様子</figcaption></figure>
+      <figure class="fig"><a href="図/解説図_F1_SimPathsでまとまる例_3x3.png" target="_blank"><img src="図/解説図_F1_SimPathsでまとまる例_3x3.png" alt="3×3で境目の様子が同じ節点がまとまる例" loading="lazy"></a><figcaption>3×3で、境目の様子が同じならまとまる例</figcaption></figure>
       <div class="tbl"><table>
         <tr><th>n</th><th>パスの本数</th><th>ZDDの分岐節点数</th></tr>
         <tr><td>3</td><td>12</td><td>27</td></tr>
@@ -232,7 +232,7 @@ DDIndex&lt;int&gt; index(z);          // int は付箋の型</pre>
 
     <details class="card" id="f1-1-value"><summary><span class="q">追加の情報って何？使いたいときはどうする？</span><span class="chip new">10/14に質問</span></summary><div class="a">
       <p class="say">ZDDの節点は、要素、0枝の先、1枝の先の3つを最初から持っています。追加の情報は、それとは別に自分の計算のために節点ごとに書き込める付箋のようなもので、node.valueで読み書きします。&lt;int&gt;はその付箋に書く値の型です。</p>
-      <figure class="fig"><img src="図/解説図_F1_DDIndexの追加の情報.png" alt="ZDDの節点が最初から持つ情報と、自分で貼る付箋の例" loading="lazy"><figcaption>左が最初から持っている情報、右が付箋。例は、その節点から1まで行ける道の数</figcaption></figure>
+      <figure class="fig"><a href="図/解説図_F1_DDIndexの追加の情報.png" target="_blank"><img src="図/解説図_F1_DDIndexの追加の情報.png" alt="ZDDの節点が最初から持つ情報と、自分で貼る付箋の例" loading="lazy"></a><figcaption>左が最初から持っている情報、右が付箋。例は、その節点から1まで行ける道の数</figcaption></figure>
 <pre>index.terminal(0).value = 0;      // 0終端の付箋に 0
 index.terminal(1).value = 1;      // 1終端の付箋に 1
 for (int level = 1; level &lt;= index.height(); ++level) {   // 下の段から
@@ -292,8 +292,8 @@ std::cout &lt;&lt; index.root().value;  // 根の付箋がパスの総数</pre>
         <li>まとめていい理由：行き先が全く同じなら、その先の中身も全く同じなので2個置く意味が無い</li>
         <li>2×2では、下の葉が全部0のかたまりは削除規則の繰り返しで丸ごと0になり、さらに赤の3個が消え、緑のa、b、c、dの4個が残る。cとdは要素が違うのでまとまらない</li>
       </ul>
-      <figure class="fig"><img src="図/解説図_F1_ZDDへの簡約.png" alt="手引き書の例を3段階でZDDに簡約する様子" loading="lazy"><figcaption>手引き書の例で、削除規則のあとに共有規則をかける3段階</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-2_二分決定木からの簡約.png" alt="2×2の二分決定木で消える節点と残る節点" loading="lazy"><figcaption>2×2の二分決定木。灰と赤が消え、緑の4個が残る。横にスクロールできる</figcaption></figure>
+      <figure class="fig"><a href="図/解説図_F1_ZDDへの簡約.png" target="_blank"><img src="図/解説図_F1_ZDDへの簡約.png" alt="手引き書の例を3段階でZDDに簡約する様子" loading="lazy"></a><figcaption>手引き書の例で、削除規則のあとに共有規則をかける3段階</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-2_二分決定木からの簡約.png" target="_blank"><img src="図/解説図_F1-2_二分決定木からの簡約.png" alt="2×2の二分決定木で消える節点と残る節点" loading="lazy"></a><figcaption>2×2の二分決定木。灰と赤が消え、緑の4個が残る。タップで元の大きさで開く</figcaption></figure>
 <pre>a ─使う────→ c ─使う→ 1
 │             └使わない→ 0
 └使わない→ b ─使う→ d ─使う→ 1
@@ -434,12 +434,12 @@ while (!path.empty()) {                // スタックが空になるまで
         <li>次の周の始まり方：まず while の判定 !path.empty() を確かめ、true なら中の1行目 int v = path.top(); から実行する。下の if の continue のときは path を変えていないので、v は同じ頂点のまま</li>
         <li>進む4行：しおりの方向の隣 w を出す、しおりを先に1つ進める、進めなければ continue、進めるなら w に印を付けて w としおり0を積む</li>
       </ul>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法1のループの1周.png" alt="方法1のループ1周の流れと、3×3で進めるときと進めないときの例" loading="lazy"><figcaption>左がループ1周の流れ。右が3×3の例。横にスクロールできる</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法1のループの1周.png" target="_blank"><img src="図/解説図_F1-3_方法1のループの1周.png" alt="方法1のループ1周の流れと、3×3で進めるときと進めないときの例" loading="lazy"></a><figcaption>左がループ1周の流れ。右が3×3の例。タップで元の大きさで開く</figcaption></figure>
     </div></details>
 
     <details class="card" id="f1-3-trace1"><summary><span class="q">方法1を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
       <p class="say">頂点は上の段が1、2、下の段が3、4です。右下左上の順に試して、ゴールの4に2回着くので2本です。</p>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法1のスタックをコマ割りで.png" alt="2×2で方法1のpathとnext_dirがどう変わるかのコマ割り" loading="lazy"><figcaption>10/14に質問して足した図。next_dirは頂点ごとのしおり。横にスクロールできる</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法1のスタックをコマ割りで.png" target="_blank"><img src="図/解説図_F1-3_方法1のスタックをコマ割りで.png" alt="2×2で方法1のpathとnext_dirがどう変わるかのコマ割り" loading="lazy"></a><figcaption>10/14に質問して足した図。next_dirは頂点ごとのしおり。タップで元の大きさで開く</figcaption></figure>
       <div class="tbl"><table class="trace">
         <tr><th>今いる頂点</th><th>試す方向</th><th>先</th><th>結果</th><th>path</th></tr>
         <tr><td>1</td><td>右</td><td>2</td><td>進む</td><td>1, 2</td></tr>
@@ -502,9 +502,9 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
     order.pop_back();  used[v] = false;  // 足した頂点を外して元に戻す
   }
 }</pre>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="arrange を呼ぶたびに同じ手順書の紙を上に重ね、終わったら捨てて下の紙が再開する様子の8コマ" loading="lazy"><figcaption>10/14に質問して足した図。関数を呼ぶと、同じ手順書の新しい紙が上に重なり、頭から実行される。下の紙は自分の v と止めた行を覚えて待つ。上の紙が終わると捨てて、下の紙が止めた行の次から再開する</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2のorderとusedの変化.png" alt="2×2で order と used が1手ずつどう変わるかの表" loading="lazy"><figcaption>10/14に質問して足した図。order の中身を変えるのは push_back と pop_back だけ。字下げが深いほど奥の呼び出し</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2のusedで飛ばす.png" alt="3×3の arrange(4, 5) で used が true の4と5を飛ばす図と、無いとどうなるか" loading="lazy"><figcaption>10/14に質問して足した図。used[v] が true の頂点は足さない。これが無いと同じ頂点を2回通り、再帰も止まらない</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2を紙の重なりで.png" target="_blank"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="arrange を呼ぶたびに同じ手順書の紙を上に重ね、終わったら捨てて下の紙が再開する様子の8コマ" loading="lazy"></a><figcaption>10/14に質問して足した図。関数を呼ぶと、同じ手順書の新しい紙が上に重なり、頭から実行される。下の紙は自分の v と止めた行を覚えて待つ。上の紙が終わると捨てて、下の紙が止めた行の次から再開する</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2のorderとusedの変化.png" target="_blank"><img src="図/解説図_F1-3_方法2のorderとusedの変化.png" alt="2×2で order と used が1手ずつどう変わるかの表" loading="lazy"></a><figcaption>10/14に質問して足した図。order の中身を変えるのは push_back と pop_back だけ。字下げが深いほど奥の呼び出し</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2のusedで飛ばす.png" target="_blank"><img src="図/解説図_F1-3_方法2のusedで飛ばす.png" alt="3×3の arrange(4, 5) で used が true の4と5を飛ばす図と、無いとどうなるか" loading="lazy"></a><figcaption>10/14に質問して足した図。used[v] が true の頂点は足さない。これが無いと同じ頂点を2回通り、再帰も止まらない</figcaption></figure>
       <ul class="pt">
         <li>order は今の並べ方で、1とn²の間に並べた頂点。最初は空</li>
         <li>前半は今の並べ方の判定。1、order の頂点、n²の順に、隣どうしが全部 can_move で動ければ1本数える</li>
@@ -530,14 +530,14 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
 
     <details class="card" id="f1-3-gyou2"><summary><span class="q">方法2を2×2で1行ずつ、紙の重なりの全コマで追うと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
       <p class="say">arrange を呼ぶと、同じコードの新しい紙が上に重なって1行目から実行されます。呼んだ側の紙は14行目で止まって待ち、上の紙が18行目まで行くと15行目から再開します。2×2では全部で89手、5通りを調べて2本です。</p>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="紙の重なりの8コマ" loading="lazy"><figcaption>まず全体の8コマ。下の図はその②から⑧の中身を1行ずつ追ったもの</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の②を1行ずつ.png" alt="②の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>② 紙A arrange(空) が前半を終えて、紙B arrange(2) を呼ぶまで</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の③を1行ずつ.png" alt="③の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>③ 紙B が v=2 を飛ばし、v=3 を足して紙C arrange(2, 3) を呼ぶまで</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の④を1行ずつ.png" alt="④の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>④ 紙C は誰も呼ばずに終わり、紙B が15行目から再開して3を外す</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑤を1行ずつ.png" alt="⑤の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑤ 紙B の for が終わって紙B も終わり、紙A が15行目から再開して2を外す</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑥を1行ずつ.png" alt="⑥の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑥ 紙A が for の続きで v=3 を足し、紙D arrange(3) を呼ぶ</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑦を1行ずつ.png" alt="⑦の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑦ 紙D が v=2 を足して、紙E arrange(3, 2) を呼ぶ</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑧を1行ずつ.png" alt="⑧の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑧ 紙E、紙D、紙A の順に全部終わって main に戻る</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2を紙の重なりで.png" target="_blank"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="紙の重なりの8コマ" loading="lazy"></a><figcaption>まず全体の8コマ。下の図はその②から⑧の中身を1行ずつ追ったもの</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の②を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の②を1行ずつ.png" alt="②の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>② 紙A arrange(空) が前半を終えて、紙B arrange(2) を呼ぶまで</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の③を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の③を1行ずつ.png" alt="③の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>③ 紙B が v=2 を飛ばし、v=3 を足して紙C arrange(2, 3) を呼ぶまで</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の④を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の④を1行ずつ.png" alt="④の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>④ 紙C は誰も呼ばずに終わり、紙B が15行目から再開して3を外す</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の⑤を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の⑤を1行ずつ.png" alt="⑤の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>⑤ 紙B の for が終わって紙B も終わり、紙A が15行目から再開して2を外す</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の⑥を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の⑥を1行ずつ.png" alt="⑥の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>⑥ 紙A が for の続きで v=3 を足し、紙D arrange(3) を呼ぶ</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の⑦を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の⑦を1行ずつ.png" alt="⑦の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>⑦ 紙D が v=2 を足して、紙E arrange(3, 2) を呼ぶ</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の⑧を1行ずつ.png" target="_blank"><img src="図/解説図_F1-3_方法2の⑧を1行ずつ.png" alt="⑧の中身を行番号つきのコードで追った図" loading="lazy"></a><figcaption>⑧ 紙E、紙D、紙A の順に全部終わって main に戻る</figcaption></figure>
       <ul class="pt">
         <li>丸の数字は②から通しの実行順。2×2の arrange を実際に1行ずつ動かして記録したもので、最後に count_tried 5、count_arranged 2 になり実物と一致する</li>
         <li>赤い矢印が呼ぶところ、14行目から次の紙の頭へ。青い矢印が戻るところ、18行目から呼んだ紙の15行目へ</li>
@@ -547,7 +547,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
 
     <details class="card" id="f1-3-trace2"><summary><span class="q">方法2を2×2で手で動かすと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
       <p class="say">間の頂点は2と3の2個です。空の並べ方から始めて、5通りを調べて、そのうち2通りがパスでした。</p>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の再帰をコマ割りで.png" alt="2×2で方法2のarrangeの呼び出しがどう積み重なるかのコマ割り" loading="lazy"><figcaption>10/14に質問して足した図。方法1は path に頂点を積んだが、方法2は arrange の呼び出し自体が積み重なる。横にスクロールできる</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の再帰をコマ割りで.png" target="_blank"><img src="図/解説図_F1-3_方法2の再帰をコマ割りで.png" alt="2×2で方法2のarrangeの呼び出しがどう積み重なるかのコマ割り" loading="lazy"></a><figcaption>10/14に質問して足した図。方法1は path に頂点を積んだが、方法2は arrange の呼び出し自体が積み重なる。タップで元の大きさで開く</figcaption></figure>
       <div class="tbl"><table class="trace">
         <tr><th>順</th><th>order</th><th>調べる並び</th><th>結果</th></tr>
         <tr><td>1</td><td>空</td><td>1, 4</td><td>隣ではないので駄目</td></tr>
@@ -556,7 +556,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <tr><td>4</td><td>3</td><td>1, 3, 4</td><td>パス</td></tr>
         <tr><td>5</td><td>3, 2</td><td>1, 3, 2, 4</td><td>3から2は左端なので駄目</td></tr>
       </table></div>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の呼び出しの木.png" alt="2×2の arrange の呼び出しを木にした図と、呼び出しごとに自分の v を持つことの説明" loading="lazy"><figcaption>10/14に質問して足した図。丸の数字が呼ばれる順番。左の枝を下まで行ってから戻り、右の枝へ行く</figcaption></figure>
+      <figure class="fig wide"><a href="図/解説図_F1-3_方法2の呼び出しの木.png" target="_blank"><img src="図/解説図_F1-3_方法2の呼び出しの木.png" alt="2×2の arrange の呼び出しを木にした図と、呼び出しごとに自分の v を持つことの説明" loading="lazy"></a><figcaption>10/14に質問して足した図。丸の数字が呼ばれる順番。左の枝を下まで行ってから戻り、右の枝へ行く</figcaption></figure>
       <ul class="pt"><li>Macで ./naive 2 2 を実行すると、2（調べた並べ方 5 通り）と出る。3×3は13700通り</li>
         <li>呼び出しを木にすると、親が子を呼ぶ形になる。子の箱の並びは親の並びに1個足したもの。深い方へ先に行き、行き止まりで親に戻る <span class="chip new">10/14に質問</span></li>
         <li>arrange(order, used, n) の行で呼んだ側は止まって待ち、呼んだ先が終わると次の pop_back の行から再開する</li>
