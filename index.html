@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:16</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:22</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -507,6 +507,8 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <li>前半は今の並べ方の判定。1、order の頂点、n²の順に、隣どうしが全部 can_move で動ければ1本数える</li>
         <li>後半は次の並べ方を作る所。まだ使っていない頂点を1つ後ろに足して自分を呼び、戻ってきたら外して次の頂点を試す</li>
         <li>for (int v : order) は order の中身を前から1つずつ v に入れて回す書き方</li>
+        <li>前半の例、3×3で order が 4, 5, 2。1から4、4から5、5から2は動けるが、最後の2から9は隣でないので数えない。order が 2, 6 なら2から6で駄目になり、break で残りを見ずに for を抜ける <span class="chip new">10/14に質問</span></li>
+        <li>prev は1つ前の頂点。最初は始点の1で、確かめるたびに今の v に置き換える。for を抜けたとき prev は order の最後の頂点なので、そこから n² へ動けるかを最後に確かめる</li>
         <li>&amp;order の &amp; は参照。配列をコピーせず、全部の呼び出しで同じ配列を使い回す。だから足したら必ず外して戻す</li>
         <li>2つのカウンタを関数の外に置いているのは、再帰のどの段からも同じ数に足すため</li>
         <li>関数の外に書いた変数はグローバル変数。どの関数からも見えて、プログラムが終わるまで消えない。arrange の中に書くと呼び出しごとに別の変数になり、毎回0から始まってしまう <span class="chip new">10/14に質問</span></li>
@@ -544,6 +546,8 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <li>argc は言葉の個数で、プログラム名の ./naive も数えるので3</li>
         <li>argc が3より小さい、つまり n か方法を打ち忘れたら、使い方を表示して return 1 で終わる</li>
         <li>return 0 は正常に終わった、return 1 は何かおかしくて終わった、という合図</li>
+        <li>return はそこで main を終わらせるので、return 1 を cerr より先に書くと使い方が表示されない。提出したコードは cerr が先 <span class="chip new">10/14に質問</span></li>
+        <li>main は method が1なら方法1の答えを、2なら order と used を用意して arrange を1回呼び、終わったあとにグローバルの2つのカウンタを表示する</li>
         <li>方法が1なら count_by_priority、2なら arrange を呼び、結果を表示する</li>
       </ul>
     </div></details>
