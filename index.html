@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:12</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:14</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -524,7 +524,13 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <tr><td>4</td><td>3</td><td>1, 3, 4</td><td>パス</td></tr>
         <tr><td>5</td><td>3, 2</td><td>1, 3, 2, 4</td><td>3から2は左端なので駄目</td></tr>
       </table></div>
-      <ul class="pt"><li>Macで ./naive 2 2 を実行すると、2（調べた並べ方 5 通り）と出る。3×3は13700通り</li></ul>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の呼び出しの木.png" alt="2×2の arrange の呼び出しを木にした図と、呼び出しごとに自分の v を持つことの説明" loading="lazy"><figcaption>10/14に質問して足した図。丸の数字が呼ばれる順番。左の枝を下まで行ってから戻り、右の枝へ行く</figcaption></figure>
+      <ul class="pt"><li>Macで ./naive 2 2 を実行すると、2（調べた並べ方 5 通り）と出る。3×3は13700通り</li>
+        <li>呼び出しを木にすると、親が子を呼ぶ形になる。子の箱の並びは親の並びに1個足したもの。深い方へ先に行き、行き止まりで親に戻る <span class="chip new">10/14に質問</span></li>
+        <li>arrange(order, used, n) の行で呼んだ側は止まって待ち、呼んだ先が終わると次の pop_back の行から再開する</li>
+        <li>呼び出しごとに自分専用の v を持つ。arrange(空) は v = 2 のまま arrange(2) を待ち、戻ったら v++ で 3 を試す。方法1の next_dir のしおりの役を、この v がやっている</li>
+        <li>3×3の13700通りは、間の頂点7個から0個、1個、…、7個を選んで並べる数の合計。1 + 7 + 42 + 210 + 840 + 2520 + 5040 + 5040 = 13700</li>
+        <li>方法2は途中で駄目と分かった並びでも、後ろに足して調べ続ける。方法1は駄目な方向へは進まないので、調べる数が少ない</li></ul>
     </div></details>
 
     <details class="card" id="f1-3-main"><summary><span class="q">mainのargcとargvは何？</span><span class="chip new">10/14に質問</span></summary><div class="a">
