@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:38</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:42</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -503,6 +503,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
   }
 }</pre>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="arrange を呼ぶたびに同じ手順書の紙を上に重ね、終わったら捨てて下の紙が再開する様子の8コマ" loading="lazy"><figcaption>10/14に質問して足した図。関数を呼ぶと、同じ手順書の新しい紙が上に重なり、頭から実行される。下の紙は自分の v と止めた行を覚えて待つ。上の紙が終わると捨てて、下の紙が止めた行の次から再開する</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の②を1行ずつ.png" alt="arrange(空) が arrange(2) を呼ぶまでを行番号つきのコードで1行ずつ追った図" loading="lazy"><figcaption>10/14に質問して足した図。紙Aが14行目で arrange を呼ぶと、紙Aはそこで止まり、紙Bが1行目から同じコードを実行する。紙Bが全部終わると紙Aは15行目から再開する</figcaption></figure>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2のorderとusedの変化.png" alt="2×2で order と used が1手ずつどう変わるかの表" loading="lazy"><figcaption>10/14に質問して足した図。order の中身を変えるのは push_back と pop_back だけ。字下げが深いほど奥の呼び出し</figcaption></figure>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2のusedで飛ばす.png" alt="3×3の arrange(4, 5) で used が true の4と5を飛ばす図と、無いとどうなるか" loading="lazy"><figcaption>10/14に質問して足した図。used[v] が true の頂点は足さない。これが無いと同じ頂点を2回通り、再帰も止まらない</figcaption></figure>
       <ul class="pt">
