@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:36</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:38</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -510,6 +510,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <li>前半は今の並べ方の判定。1、order の頂点、n²の順に、隣どうしが全部 can_move で動ければ1本数える</li>
         <li>後半は次の並べ方を作る所。まだ使っていない頂点を1つ後ろに足して自分を呼び、戻ってきたら外して次の頂点を試す</li>
         <li>for (int v : order) は order の中身を前から1つずつ v に入れて回す書き方</li>
+        <li>図の「1→4 を判定」は、2×2の arrange(空) の前半のこと。order が空なので for は1回も回らず prev は1のまま。最後の if で can_move(1, 4, 2) を見る。1と4は斜めで隣ではないので false、数えない。間に何も置かずに始点から直接ゴールへ行く道を調べている <span class="chip new">10/14に質問</span></li>
         <li>前半の例、3×3で order が 4, 5, 2。1から4、4から5、5から2は動けるが、最後の2から9は隣でないので数えない。order が 2, 6 なら2から6で駄目になり、break で残りを見ずに for を抜ける <span class="chip new">10/14に質問</span></li>
         <li>order が空、2、(2, 3)、2、空、3、(3, 2)、3、空と伸び縮みするのは、for の中で自分を呼んでいるから。2×2なら for を2重に書いたのと同じ動きで、外側の v=2 の間に内側の for を最後まで回し、それから外側が v=3 に進む。再帰にしているのは、n によって必要な for の重ね数が変わるから <span class="chip new">10/14に質問</span></li>
         <li>order の中身はどこにも書いていない。main で空として作り、後半の push_back で1個ずつ足し、pop_back で外して作っていく。4, 5, 2 は、その途中で order がたまたまその形になった瞬間の例。arrange(空) が4を足して arrange(4)、その中で5を足して arrange(4, 5)、その中で2を足して arrange(4, 5, 2) と呼んだとき、前半の for が見る order が 4, 5, 2 になる <span class="chip new">10/14に質問</span></li>
