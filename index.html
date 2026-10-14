@@ -100,7 +100,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:49</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 10:01</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -509,6 +509,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
       <figure class="fig wide"><a href="図/解説図_F1-3_方法2のorderとusedの変化.png" target="_blank"><img src="図/解説図_F1-3_方法2のorderとusedの変化.png" alt="2×2で order と used が1手ずつどう変わるかの表" loading="lazy"></a><figcaption>10/14に質問して足した図。order の中身を変えるのは push_back と pop_back だけ。字下げが深いほど奥の呼び出し</figcaption></figure>
       <figure class="fig wide"><a href="図/解説図_F1-3_方法2のusedで飛ばす.png" target="_blank"><img src="図/解説図_F1-3_方法2のusedで飛ばす.png" alt="3×3の arrange(4, 5) で used が true の4と5を飛ばす図と、無いとどうなるか" loading="lazy"></a><figcaption>10/14に質問して足した図。used[v] が true の頂点は足さない。これが無いと同じ頂点を2回通り、再帰も止まらない</figcaption></figure>
       <ul class="pt">
+        <li>arrange はアレンジと読む。英語で並べるという意味で、間の頂点を並べる関数なのでこの名前 <span class="chip new">10/14に質問</span></li>
         <li>order は今の並べ方で、1とn²の間に並べた頂点。最初は空</li>
         <li>前半は今の並べ方の判定。1、order の頂点、n²の順に、隣どうしが全部 can_move で動ければ1本数える</li>
         <li>後半は次の並べ方を作る所。まだ使っていない頂点を1つ後ろに足して自分を呼び、戻ってきたら外して次の頂点を試す</li>
