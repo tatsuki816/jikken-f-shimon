@@ -100,7 +100,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 10:01</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 10:03</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -284,6 +284,7 @@ std::cout &lt;&lt; index.root().value;  // 根の付箋がパスの総数</pre>
     <details class="card" id="f1-2-henkei"><summary><span class="q">二分決定木からZDDへはどうやって変形した？</span><span class="chip">友達が聞かれた</span></summary><div class="a">
       <p class="say">2×2の格子の4本の辺をa、b、c、dとして、まず辺をこの順に使うか使わないかで枝分かれさせる二分決定木を書きました。その木に、節点削除規則と節点共有規則を、適用できなくなるまで繰り返しました。</p>
       <ul class="pt">
+        <li>二分決定木は、にぶんけっていぎと読む。英語では binary decision tree <span class="chip new">10/14に質問</span></li>
         <li>節点削除規則：1枝、つまり使う側の枝が0終端節点を指す節点を消し、その節点を指していた枝を、消した節点の0枝、つまり使わない側の枝の先につなぎ替える</li>
         <li>節点共有規則：要素が同じで、0枝の行き先と1枝の行き先も同じ節点を1つにまとめる</li>
         <li>パスは{a, c}と{b, d}の2本</li>
