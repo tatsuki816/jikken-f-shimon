@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:32</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:36</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -502,6 +502,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
     order.pop_back();  used[v] = false;  // 足した頂点を外して元に戻す
   }
 }</pre>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="arrange を呼ぶたびに同じ手順書の紙を上に重ね、終わったら捨てて下の紙が再開する様子の8コマ" loading="lazy"><figcaption>10/14に質問して足した図。関数を呼ぶと、同じ手順書の新しい紙が上に重なり、頭から実行される。下の紙は自分の v と止めた行を覚えて待つ。上の紙が終わると捨てて、下の紙が止めた行の次から再開する</figcaption></figure>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2のorderとusedの変化.png" alt="2×2で order と used が1手ずつどう変わるかの表" loading="lazy"><figcaption>10/14に質問して足した図。order の中身を変えるのは push_back と pop_back だけ。字下げが深いほど奥の呼び出し</figcaption></figure>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2のusedで飛ばす.png" alt="3×3の arrange(4, 5) で used が true の4と5を飛ばす図と、無いとどうなるか" loading="lazy"><figcaption>10/14に質問して足した図。used[v] が true の頂点は足さない。これが無いと同じ頂点を2回通り、再帰も止まらない</figcaption></figure>
       <ul class="pt">
@@ -510,6 +511,7 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <li>後半は次の並べ方を作る所。まだ使っていない頂点を1つ後ろに足して自分を呼び、戻ってきたら外して次の頂点を試す</li>
         <li>for (int v : order) は order の中身を前から1つずつ v に入れて回す書き方</li>
         <li>前半の例、3×3で order が 4, 5, 2。1から4、4から5、5から2は動けるが、最後の2から9は隣でないので数えない。order が 2, 6 なら2から6で駄目になり、break で残りを見ずに for を抜ける <span class="chip new">10/14に質問</span></li>
+        <li>order が空、2、(2, 3)、2、空、3、(3, 2)、3、空と伸び縮みするのは、for の中で自分を呼んでいるから。2×2なら for を2重に書いたのと同じ動きで、外側の v=2 の間に内側の for を最後まで回し、それから外側が v=3 に進む。再帰にしているのは、n によって必要な for の重ね数が変わるから <span class="chip new">10/14に質問</span></li>
         <li>order の中身はどこにも書いていない。main で空として作り、後半の push_back で1個ずつ足し、pop_back で外して作っていく。4, 5, 2 は、その途中で order がたまたまその形になった瞬間の例。arrange(空) が4を足して arrange(4)、その中で5を足して arrange(4, 5)、その中で2を足して arrange(4, 5, 2) と呼んだとき、前半の for が見る order が 4, 5, 2 になる <span class="chip new">10/14に質問</span></li>
         <li>if (used[v]) continue は、もう order に入っている頂点を足さないための行。order が 4, 5 のとき、v=4 と v=5 は飛ばし、2、3、6、7、8 だけを足して呼ぶ。これが無いと 4, 5, 4 のように同じ頂点を2回通る並びを作ってしまう</li>
         <li>この行は再帰を止める役もある。間の頂点を全部使い切ると、for の全部の v が continue で飛ばされ、もう自分を呼ばずに関数が終わる。無いと 2, 2, 2, … と際限なく足して終わらない</li>
