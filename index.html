@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:22</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:28</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -508,6 +508,9 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <li>後半は次の並べ方を作る所。まだ使っていない頂点を1つ後ろに足して自分を呼び、戻ってきたら外して次の頂点を試す</li>
         <li>for (int v : order) は order の中身を前から1つずつ v に入れて回す書き方</li>
         <li>前半の例、3×3で order が 4, 5, 2。1から4、4から5、5から2は動けるが、最後の2から9は隣でないので数えない。order が 2, 6 なら2から6で駄目になり、break で残りを見ずに for を抜ける <span class="chip new">10/14に質問</span></li>
+        <li>order の中身はどこにも書いていない。main で空として作り、後半の push_back で1個ずつ足し、pop_back で外して作っていく。4, 5, 2 は、その途中で order がたまたまその形になった瞬間の例。arrange(空) が4を足して arrange(4)、その中で5を足して arrange(4, 5)、その中で2を足して arrange(4, 5, 2) と呼んだとき、前半の for が見る order が 4, 5, 2 になる <span class="chip new">10/14に質問</span></li>
+        <li>if (used[v]) continue は、もう order に入っている頂点を足さないための行。order が 4, 5 のとき、v=4 と v=5 は飛ばし、2、3、6、7、8 だけを足して呼ぶ。これが無いと 4, 5, 4 のように同じ頂点を2回通る並びを作ってしまう</li>
+        <li>この行は再帰を止める役もある。間の頂点を全部使い切ると、for の全部の v が continue で飛ばされ、もう自分を呼ばずに関数が終わる。無いと 2, 2, 2, … と際限なく足して終わらない</li>
         <li>prev は1つ前の頂点。最初は始点の1で、確かめるたびに今の v に置き換える。for を抜けたとき prev は order の最後の頂点なので、そこから n² へ動けるかを最後に確かめる</li>
         <li>&amp;order の &amp; は参照。配列をコピーせず、全部の呼び出しで同じ配列を使い回す。だから足したら必ず外して戻す</li>
         <li>2つのカウンタを関数の外に置いているのは、再帰のどの段からも同じ数に足すため</li>
