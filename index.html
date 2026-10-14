@@ -71,6 +71,8 @@ details.card[data-done="1"] .q::before { content: "✓"; color: var(--ok); }
 .fig { margin: 0; display: grid; gap: 4px; }
 .fig img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: #ffffff; }
 .fig.wide img { width: 100%; }
+section, details.card, .a, .fig { min-width: 0; }
+.a pre, .tbl { max-width: 100%; overflow-x: auto; }
 .fig a { display: block; }
 .fig figcaption { font-size: .8rem; color: var(--muted); }
 .a { padding: 0 14px 14px; display: grid; gap: 10px; min-width: 0; }
@@ -97,7 +99,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:47</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:48</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
