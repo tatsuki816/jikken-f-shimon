@@ -97,7 +97,7 @@ table.trace td, table.trace th { text-align: left; }
   <header>
     <h1>実験F 試問カード</h1>
     <p class="when"><b>10/14(水) 10:15から</b>　S414、和佐先生の居室</p>
-    <p class="when">最終更新 <span id="updated">10/14 09:42</span>。青い印は10/14に自分で質問して足したカード</p>
+    <p class="when">最終更新 <span id="updated">10/14 09:45</span>。青い印は10/14に自分で質問して足したカード</p>
   </header>
 
   <div class="bar">
@@ -503,7 +503,6 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
   }
 }</pre>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="arrange を呼ぶたびに同じ手順書の紙を上に重ね、終わったら捨てて下の紙が再開する様子の8コマ" loading="lazy"><figcaption>10/14に質問して足した図。関数を呼ぶと、同じ手順書の新しい紙が上に重なり、頭から実行される。下の紙は自分の v と止めた行を覚えて待つ。上の紙が終わると捨てて、下の紙が止めた行の次から再開する</figcaption></figure>
-      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の②を1行ずつ.png" alt="arrange(空) が arrange(2) を呼ぶまでを行番号つきのコードで1行ずつ追った図" loading="lazy"><figcaption>10/14に質問して足した図。紙Aが14行目で arrange を呼ぶと、紙Aはそこで止まり、紙Bが1行目から同じコードを実行する。紙Bが全部終わると紙Aは15行目から再開する</figcaption></figure>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2のorderとusedの変化.png" alt="2×2で order と used が1手ずつどう変わるかの表" loading="lazy"><figcaption>10/14に質問して足した図。order の中身を変えるのは push_back と pop_back だけ。字下げが深いほど奥の呼び出し</figcaption></figure>
       <figure class="fig wide"><img src="図/解説図_F1-3_方法2のusedで飛ばす.png" alt="3×3の arrange(4, 5) で used が true の4と5を飛ばす図と、無いとどうなるか" loading="lazy"><figcaption>10/14に質問して足した図。used[v] が true の頂点は足さない。これが無いと同じ頂点を2回通り、再帰も止まらない</figcaption></figure>
       <ul class="pt">
@@ -526,6 +525,23 @@ void arrange(std::vector&lt;int&gt; &amp;order, std::vector&lt;bool&gt; &amp;use
         <li>main では order を空、used を n*n+1 個の false で作ってから arrange(order, used, n) を1回呼ぶ。3×3なら used は0から9の10個で、0番は使わない</li>
         <li>&amp; が無いと、呼ぶたびに order と used のコピーが作られる。&amp; があるので、何段呼んでも同じ1本の配列を全員で使う</li>
         <li>関数の終わりまで来ると、呼び出し元の for の続きに戻る。最初の呼び出しの for が終わると全体が終わる</li>
+      </ul>
+    </div></details>
+
+    <details class="card" id="f1-3-gyou2"><summary><span class="q">方法2を2×2で1行ずつ、紙の重なりの全コマで追うと？</span><span class="chip new">10/14に質問</span></summary><div class="a">
+      <p class="say">arrange を呼ぶと、同じコードの新しい紙が上に重なって1行目から実行されます。呼んだ側の紙は14行目で止まって待ち、上の紙が18行目まで行くと15行目から再開します。2×2では全部で89手、5通りを調べて2本です。</p>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2を紙の重なりで.png" alt="紙の重なりの8コマ" loading="lazy"><figcaption>まず全体の8コマ。下の図はその②から⑧の中身を1行ずつ追ったもの</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の②を1行ずつ.png" alt="②の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>② 紙A arrange(空) が前半を終えて、紙B arrange(2) を呼ぶまで</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の③を1行ずつ.png" alt="③の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>③ 紙B が v=2 を飛ばし、v=3 を足して紙C arrange(2, 3) を呼ぶまで</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の④を1行ずつ.png" alt="④の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>④ 紙C は誰も呼ばずに終わり、紙B が15行目から再開して3を外す</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑤を1行ずつ.png" alt="⑤の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑤ 紙B の for が終わって紙B も終わり、紙A が15行目から再開して2を外す</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑥を1行ずつ.png" alt="⑥の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑥ 紙A が for の続きで v=3 を足し、紙D arrange(3) を呼ぶ</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑦を1行ずつ.png" alt="⑦の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑦ 紙D が v=2 を足して、紙E arrange(3, 2) を呼ぶ</figcaption></figure>
+      <figure class="fig wide"><img src="図/解説図_F1-3_方法2の⑧を1行ずつ.png" alt="⑧の中身を行番号つきのコードで追った図" loading="lazy"><figcaption>⑧ 紙E、紙D、紙A の順に全部終わって main に戻る</figcaption></figure>
+      <ul class="pt">
+        <li>丸の数字は②から通しの実行順。2×2の arrange を実際に1行ずつ動かして記録したもので、最後に count_tried 5、count_arranged 2 になり実物と一致する</li>
+        <li>赤い矢印が呼ぶところ、14行目から次の紙の頭へ。青い矢印が戻るところ、18行目から呼んだ紙の15行目へ</li>
+        <li>どの紙も自分の v を持っているので、戻ってきたあと10行目の v++ で続きの頂点に進める</li>
       </ul>
     </div></details>
 
